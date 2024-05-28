@@ -200,9 +200,9 @@
                   <table id="tableMenu" class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                        <th>No</th>
-                        <th>Level User</th>
-                        <th>Action</th>
+                      <th>No</th>
+                      <th>Level User</th>
+                      <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -254,68 +254,61 @@
               </div>
 
               <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Nama</label>
-                <div class="col-sm-8">
-                  <input type="text" name="nama" id="nama" class="form-control" required="required">
-                  <span class="help-block"></span>
-                </div>
-              </div>
-
-              <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Class/method</label>
-                <div class="col-sm-8">
-                  <input type="text" name="url" id="url" class="form-control" required="required">
-                  <span class="help-block"></span>
-                </div>
-              </div>
-
-              <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Icon</label>
-                <div class="col-sm-8">
-                  <input type="text" name="icon" id="icon" class="form-control" required="required">
-                  <span class="help-block"></span>
-                </div>
-              </div>
-
-              <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Level</label>
+                <label class="col-sm-4 col-form-label">Level User</label>
                 <div class="col-sm-8">
                   <select class="custom-select rounded-0" name="level" id="level">
                     <option value="" selected disabled>-- pilih --</option>
-                    <option value="main_menu">Main Menu</option>
-                    <option value="sub_menu">Sub Menu</option>
+                    <option value="admin">Admin</option>
+                    <option value="karyawan">Karyawan</option>
                   </select>
                   <span class="help-block"></span>
                 </div>
               </div>
 
               <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Main Menu</label>
-                <div class="col-sm-8">
-                  <input type="text" name="mainmenu" id="mainmenu" class="form-control" required="required">
-                  <span class="help-block"></span>
-                </div>
-              </div>
-
-              <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Status</label>
+                <label class="col-sm-4 col-form-label">Akses</label>
                 <div class="col-sm-8">
                   <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="status">
-                    <label class="custom-control-label" for="status"></label>
+                    <input type="checkbox" class="custom-control-input" id="akses">
+                    <label class="custom-control-label" for="akses"></label>
                   </div>
                   <span class="help-block"></span>
                 </div>
               </div>
 
               <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Nomor Urut</label>
+                <label class="col-sm-4 col-form-label">Tambah</label>
                 <div class="col-sm-8">
-                  <input type="text" name="nourut" id="nourut" class="form-control" required="required">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="tambah">
+                    <label class="custom-control-label" for="tambah"></label>
+                  </div>
                   <span class="help-block"></span>
                 </div>
               </div>
 
+              <div class="form-group row mb-3">
+                <label class="col-sm-4 col-form-label">Edit</label>
+                <div class="col-sm-8">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="edit">
+                    <label class="custom-control-label" for="edit"></label>
+                  </div>
+                  <span class="help-block"></span>
+                </div>
+              </div>
+
+              <div class="form-group row mb-3">
+                <label class="col-sm-4 col-form-label">Hapus</label>
+                <div class="col-sm-8">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="hapus">
+                    <label class="custom-control-label" for="hapus"></label>
+                  </div>
+                  <span class="help-block"></span>
+                </div>
+              </div>
+           
             </form>
 
             <div class="modal-footer justify-content-between">
@@ -352,13 +345,16 @@
               Add Akses
             </a>
             </br>
-            </br>
             <table id="tableMenu2" class="table table-bordered table-striped">
               <thead>
                 <tr>
                   <th>No</th>
+                  <th>Kode Menu</th>
                   <th>Level User</th>
-                  <th>Action</th>
+                  <th>Akses</th>
+                  <th>Tambah</th>
+                  <th>Edit</th>
+                  <th>Hapus</th>
                 </tr>
               </thead>
               <tbody>
@@ -367,8 +363,6 @@
 
             </table>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="btn_save" onclick="save()">Save changes</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -423,6 +417,7 @@
     function add_akses() {
       $('#modal-lg').modal('hide');
       $('#modal-lg-2').modal('show');
+      $('.modal-title').text('Add <?= $nama_submenu ?>');
     }
 
     function save() {
@@ -438,11 +433,8 @@
         value: statusValue
       });
 
-      save_url = (save_method == "add") ? 'add' : 'update';
-
       $.ajax({
-        url: "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>" +
-          save_url,
+        url: "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>add",
         type: "POST",
         data: data_save,
         dataType: "JSON",
@@ -472,41 +464,11 @@
       });
     }
 
-
-
+   
     function edit(id) {
-      save_method = "update";
-      $.ajax({
-        url: "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>edit_akses/" +
-          id,
-        type: "GET",
-        dataType: "JSON",
-        success: function(result) {
-          data = result.data;
-
-          if (result.status == 'success') {
-            resetForm();
-            $('#kode').prop('disabled', true);
-            $('[name="kode"]').val(data.kode_menu);
-            $('[name="nama"]').val(data.nama_menu);
-            $('[name="url"]').val(data.url);
-            $('[name="icon"]').val(data.icon);
-            $('[name="level"]').val(data.level);
-            $('[name="mainmenu"]').val(data.main_menu);
-            $('#status').prop('checked', data.aktif == 1 ? true : false);
-            $('[name="nourut"]').val(data.no_urut);
-            $('#modal-lg').modal('show');
-            $('#btn_save').text('Edit');
-            $('.modal-title').text('Edit <?= $nama_submenu ?>');
-          } else {
-            alert('Error get data from ajax');
-          }
-
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('Error get data from ajax');
-        }
-      });
+      $('#modal-lg').modal('show');
+      $('.modal-title').text('Edit <?= $nama_submenu ?>');
+      $('#tableMenu2').DataTable().ajax.url("<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>edit_akses/" + id).load();
     }
 
     function removeErrorOnChange(selector) {
@@ -516,7 +478,44 @@
       });
     }
 
+    function updateAkses(id, isChecked){
+      let data = id.split('|');
+
+      let kode = data[0];
+      let inisial = data[1];
+      let status = isChecked ? 1:0;
+
+      $.ajax({
+        url: "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>updateAkses",
+        type: "POST",
+        data: {
+          id : kode,
+          inisial : inisial,
+          status : status
+        },
+        dataType: "JSON",
+        success: function(result) {
+          console.log(result);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('Error get data from ajax');
+        }
+      });
+    }
+    
+
+
     $(function() {
+      
+        $('#tableMenu2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true
+        });
 
       table = $('#tableMenu').DataTable({
         "buttons": ["copy", "excel", "pdf"],
@@ -546,36 +545,6 @@
         ],
 
       });
-
-      table2 = $('#tableMenu2').DataTable({
-        "buttons": ["copy", "excel", "pdf"],
-        "paging": true,
-        "lengthChange": false,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-        "ajax": {
-          "url": "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>get_list",
-          "type": "POST",
-        },
-        "aoColumns": [{
-            "No": "No",
-            "sClass": "text-center"
-          },
-          {
-            "level": "level",
-            "sClass": "text-left"
-          },
-          {
-            "#": "#",
-            "sClass": "text-center"
-          }
-        ],
-
-      });
-
 
       const selectors = ["#kode", "#nama", "#url", "#level", "#nourut"];
 

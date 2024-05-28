@@ -23,6 +23,16 @@ class Menu_sistem extends CI_Controller
 		$this->load->view('menu_v', $data);
 	}
 
+	private function generateSwitch($akses, $id) {
+		$isChecked = ($akses == 1) ? 'checked' : '';
+		
+		return '
+		<div class="custom-control custom-switch">
+			<input type="checkbox" class="custom-control-input" id="' . $id . '" ' . $isChecked . ' disabled>
+			<label class="custom-control-label" for="' . $id . '"></label>
+		</div>';
+	}
+
 	public function get_list()
 	{
 		$get_alls = $this->get_model->get_data_all();
@@ -32,14 +42,7 @@ class Menu_sistem extends CI_Controller
 		foreach ($get_alls as $get) {
 			$no++;
 			$row = array();
-
-			$aktif = ($get->aktif == 1) ? '<div class="custom-control custom-switch">
-			<input type="checkbox" class="custom-control-input" id="' . $get->kode_menu . '" checked disabled>
-			<label class="custom-control-label" for="' . $get->kode_menu . '"></label>
-			</div>' : '<div class="custom-control custom-switch">
-			<input type="checkbox" class="custom-control-input" id="' . $get->kode_menu . '" disabled>
-			<label class="custom-control-label" for="' . $get->kode_menu . '"></label>
-			</div>';
+			$aktif = $this->generateSwitch($get->aktif, $get->kode_menu);
 
 			$row[] = $no;
 			$row[] = strtolower($get->kode_menu);
@@ -67,110 +70,128 @@ class Menu_sistem extends CI_Controller
 
 	public function add()
 	{
-		$this->_validate();
-		$kode_menu = $this->input->post('kode');
+		$cek_akses = cek_akses_menu(__FUNCTION__);
+		if($cek_akses){
+			$this->_validate();
+			$kode_menu = $this->input->post('kode');
 
-		$fields = array(
-			'kode' => 'kode_menu',
-			'nama' => 'nama_menu',
-			'url' => 'url',
-			'icon' => 'icon',
-			'level' => 'level',
-			'mainmenu' => 'main_menu',
-			'nourut' => 'no_urut',
-			'status' => 'aktif',
-		);
-		$cek = $this->get_model->cek_data($kode_menu);
+			$fields = array(
+				'kode' => 'kode_menu',
+				'nama' => 'nama_menu',
+				'url' => 'url',
+				'icon' => 'icon',
+				'level' => 'level',
+				'mainmenu' => 'main_menu',
+				'nourut' => 'no_urut',
+				'status' => 'aktif',
+			);
+			$cek = $this->get_model->cek_data($kode_menu);
 
-		if ($cek) {
-			echo json_encode(array("status" => FALSE, "message" => "Kode already exists"));
-			return;
-		}
+			if ($cek) {
+				echo json_encode(array("status" => FALSE, "message" => "Kode already exists"));
+				return;
+			}
 
-		$data = get_post_data($fields);
-		$data['tanggal'] = date('Y-m-d H:i:s');
+			$data = get_post_data($fields);
+			$data['tanggal'] = date('Y-m-d H:i:s');
 
-		$insert = $this->get_model->save($data);
+			$insert = $this->get_model->save($data);
 
-		// Adding to log
-		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-		$log_type = "ADD";
-		$log_data = json_encode($data);
+			// Adding to log
+			$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
+			$log_type = "ADD";
+			$log_data = json_encode($data);
 
-		log_helper($log_url, $log_type, $log_data);
-		// End log
+			log_helper($log_url, $log_type, $log_data);
+			// End log
 
-		if ($insert) {
-			echo json_encode(array("status" => TRUE, "message" => "Data successfully inserted"));
-		} else {
-			echo json_encode(array("status" => FALSE, "message" => "Failed to insert data"));
+			if ($insert) {
+				echo json_encode(array("status" => TRUE, "message" => "Data successfully inserted"));
+			} else {
+				echo json_encode(array("status" => FALSE, "message" => "Failed to insert data"));
+			}
+		}else{
+			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
 		}
 	}
 
 	public function update()
 	{
 		$this->_validate();
+		
 
-		$fields = array(
-			'nama' => 'nama_menu',
-			'url' => 'url',
-			'icon' => 'icon',
-			'level' => 'level',
-			'mainmenu' => 'main_menu',
-			'nourut' => 'no_urut',
-			'status' => 'aktif',
-		);
+			$fields = array(
+				'nama' => 'nama_menu',
+				'url' => 'url',
+				'icon' => 'icon',
+				'level' => 'level',
+				'mainmenu' => 'main_menu',
+				'nourut' => 'no_urut',
+				'status' => 'aktif',
+			);
+	
+			$data = get_post_data($fields);
+			$data['tanggal'] = date('Y-m-d H:i:s');
+	
+			$update = $this->get_model->update(array('kode_menu' => $this->input->post('kode')), $data);
+	
+			// Adding to log
+			$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
+			$log_type = "UPDATE";
+			$log_data = json_encode($data);
+	
+			log_helper($log_url, $log_type, $log_data);
+			// End log
+	
+			if ($update) {
+				echo json_encode(array("status" => TRUE, "message" => "Data successfully updated"));
+			} else {
+				echo json_encode(array("status" => FALSE, "message" => "Failed to update data"));
+			}
 
-		$data = get_post_data($fields);
-		$data['tanggal'] = date('Y-m-d H:i:s');
-
-		$update = $this->get_model->update(array('kode_menu' => $this->input->post('kode')), $data);
-
-		// Adding to log
-		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-		$log_type = "UPDATE";
-		$log_data = json_encode($data);
-
-		log_helper($log_url, $log_type, $log_data);
-		// End log
-
-		if ($update) {
-			echo json_encode(array("status" => TRUE, "message" => "Data successfully updated"));
-		} else {
-			echo json_encode(array("status" => FALSE, "message" => "Failed to update data"));
-		}
 	}
 
 	public function delete($id)
 	{
-		$data =  $this->get_model->get_data_by($id);
-		$delete = $this->get_model->delete($id);
+		$cek_akses = cek_akses_menu(__FUNCTION__);
+		if($cek_akses){
+			$data =  $this->get_model->get_data_by($id);
+			$delete = $this->get_model->delete($id);
 
-		// Adding to log
-		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-		$log_type = "DELETE";
-		$log_data = json_encode($data);
+			// Adding to log
+			$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
+			$log_type = "DELETE";
+			$log_data = json_encode($data);
 
-		log_helper($log_url, $log_type, $log_data);
-		// End log
+			log_helper($log_url, $log_type, $log_data);
+			// End log
 
-		if ($delete) {
-			echo json_encode(array("status" => TRUE, "message" => "Data successfully deleted"));
-		} else {
-			echo json_encode(array("status" => FALSE, "message" => "Failed to deleted data"));
+			if ($delete) {
+				echo json_encode(array("status" => TRUE, "message" => "Data successfully deleted"));
+			} else {
+				echo json_encode(array("status" => FALSE, "message" => "Failed to deleted data"));
+			}
+		}else{
+			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
 		}
 	}
 
 
 	public function edit($id)
 	{
-		$data = $this->get_model->get_data_by($id);
-		$output = array(
-			"status" => "success",
-			"data" => $data
-		);
+		$cek_akses = cek_akses_menu(__FUNCTION__);
+		if($cek_akses){
 
-		echo json_encode($output);
+			$data = $this->get_model->get_data_by($id);
+			$output = array(
+				"status" => "success",
+				"data" => $data
+			);
+			echo json_encode($output);
+
+		}else{
+			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
+		}
 	}
 
 	private function _validate()

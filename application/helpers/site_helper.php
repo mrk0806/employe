@@ -10,6 +10,20 @@ if (!function_exists('cek_aktif_login')) {
     }
 }
 
+
+if (!function_exists('cek_akses_menu')) {
+    function cek_akses_menu($inisial)
+    {
+        $ci = get_instance();
+
+        $cek = $ci->db->select($inisial)
+            ->from('akses a')
+            ->join('menu m', 'm.kode_menu = a.kode_menu', 'left')
+            ->where(['a.level_user' => $ci->session->userdata('user_logged')['level_user'], 'm.url' => $ci->uri->segment(1, 0) . $ci->uri->slash_segment(2, 'leading')])->get()->row_array();
+            return ($cek[$inisial] == "1") ? TRUE : FALSE;
+    }
+}
+
 if (!function_exists('cek_akses_user')) {
     function cek_akses_user()
     {
@@ -108,7 +122,7 @@ if (!function_exists('validate_inputs')) {
 function main_menu()
 {
     $ci = get_instance();
-    $main_menu = $ci->db->select('m.*, a.akses, a.tambah, a.edit, a.hapus')
+    $main_menu = $ci->db->select('m.*, a.akses, a.add, a.edit, a.delete')
         ->from('menu m')
         ->join('akses a', 'a.kode_menu = m.kode_menu', 'left')
         ->where(['a.level_user' => $ci->session->userdata('user_logged')['level_user'], 'm.aktif' => '1', 'm.level' => 'main_menu', 'm.nama_menu !=' => 'dashboard'])
@@ -120,7 +134,7 @@ function main_menu()
 function sub_menu()
 {
     $ci = get_instance();
-    $sub_menu = $ci->db->select('m.*, a.akses, a.tambah, a.edit, a.hapus')
+    $sub_menu = $ci->db->select('m.*, a.akses, a.add, a.edit, a.delete')
         ->from('menu m')
         ->join('akses a', 'a.kode_menu = m.kode_menu', 'left')
         ->where(['a.level_user' => $ci->session->userdata('user_logged')['level_user'], 'm.aktif' => '1', 'm.level' => 'sub_menu'])

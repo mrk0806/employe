@@ -22,6 +22,33 @@ class Akses extends CI_Controller
 		$this->load->view('akses_v', $data);
 	}
 
+	public function get_list_all(){
+		$get_alls = $this->get_model->get_data_all();
+		$data = array();
+		$no = 0;
+
+		foreach ($get_alls as $get) {
+			$no++;
+			$row = array();
+
+			$row[] = $no;
+			$row[] = ucwords(strtolower($get->level_user));
+			$row[] = '
+					<a class="btn btn-info btn-sm" href="javascript:void(0)" onclick="edit(' . "'" . $get->level_user . "'" . ')">
+						<i class="fas fa-pencil-alt"></i>
+						Edit Akses
+					</a>
+					';
+			$data[] = $row;
+		}
+
+		$output = array(
+			"data" => $data,
+		);
+
+		echo json_encode($output);
+	}
+
 	public function get_list()
 	{
 		$columns = ['level_user'];
@@ -112,7 +139,7 @@ class Akses extends CI_Controller
 		$data['tanggal'] = date('Y-m-d H:i:s');
 
 		$update = $this->get_model->update(array('kode_menu' => $this->input->post('kode')), $data);
-
+		$data['kode_menu'] = $this->input->post('kode');
 		// Adding to log
 		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
 		$log_type = "UPDATE";
@@ -148,17 +175,71 @@ class Akses extends CI_Controller
 		}
 	}
 
+	private function generateSwitch($akses, $id) {
+		$isChecked = ($akses == 1) ? 'checked' : '';
+		$initial = "'$id'";
+		return '
+		<div class="custom-control custom-switch">
+			<input type="checkbox" class="custom-control-input" onclick="updateAkses('.$initial.', this.checked)" id="' . $id . '" ' . $isChecked . ' >
+			<label class="custom-control-label" for="' . $id . '"></label>
+		</div>';
+	}
+
+	public function updateAkses(){
+		$kolom = $this->input->post('inisial');
+		$value = $this->input->post('status');
+		$data = array(
+			$kolom => $value
+		);
+		$update = $this->get_model->update(array('id' => $this->input->post('id')), $data);
+		$data['id'] = $this->input->post('id');
+		// Adding to log
+		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
+		$log_type = "UPDATE";
+		$log_data = json_encode($data);
+
+		log_helper($log_url, $log_type, $log_data);
+		// End log
+
+		if ($update) {
+			echo json_encode(array("status" => TRUE, "message" => "Data successfully updated"));
+		} else {
+			echo json_encode(array("status" => FALSE, "message" => "Failed to update data"));
+		}
+
+	}
+
 
 	public function edit_akses($id)
 	{
-		$data = $this->get_model->get_data_all_by(null, $id);
+		$get_alls = $this->get_model->get_data_all_by(null, $id);
+		$data = array();
+		$no = 0;
+
+		foreach ($get_alls as $get) {
+			$no++;
+			$row = array();
+
+			$akses 	=  $this->generateSwitch($get->akses, $get->id."|akses");
+			$tambah = ($get->level == 'main_menu') ? '' : $this->generateSwitch($get->add,$get->id."|add");
+			$edit 	= ($get->level == 'main_menu') ? '' :  $this->generateSwitch($get->edit, $get->id."|edit");
+			$hapus 	= ($get->level == 'main_menu') ? '' :  $this->generateSwitch($get->delete, $get->id."|delete");
+
+			$row[] = $no;
+			$row[] = strtolower($get->kode_menu);
+			$row[] = ucwords(strtolower($get->level_user));
+			$row[] = $akses;
+			$row[] = $tambah;
+			$row[] = $edit;
+			$row[] = $hapus;
+			$data[] = $row;
+		}
+
 		$output = array(
-			"status" => "success",
-			"data" => $data
+			"data" => $data,
 		);
 
 		echo json_encode($output);
-		exit();
 	}
 
 	private function _validate()

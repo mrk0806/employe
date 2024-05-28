@@ -480,9 +480,8 @@
             $('#btn_save').text('Edit');
             $('.modal-title').text('Edit <?= $nama_submenu ?>');
           } else {
-            alert('Error get data from ajax');
+            alert(result.message);
           }
-
         },
         error: function(jqXHR, textStatus, errorThrown) {
           alert('Error get data from ajax');

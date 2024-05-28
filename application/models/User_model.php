@@ -45,10 +45,5 @@ class User_model extends CI_Model
             redirect('dashboard');
         }
     }
-    public function isNotLogin()
-    {
-        if (!$this->session->userdata('user_logged')) {
-            redirect('/');
-        }
-    }
+   
 }
