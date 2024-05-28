@@ -32,14 +32,13 @@ class Menu_sistem extends CI_Controller
 		foreach ($get_alls as $get) {
 			$no++;
 			$row = array();
-			$no_urut = $get->no_urut;
 
 			$aktif = ($get->aktif == 1) ? '<div class="custom-control custom-switch">
-			<input type="checkbox" class="custom-control-input" id="' . $no_urut . '" checked disabled>
-			<label class="custom-control-label" for="' . $no_urut . '"></label>
+			<input type="checkbox" class="custom-control-input" id="' . $get->kode_menu . '" checked disabled>
+			<label class="custom-control-label" for="' . $get->kode_menu . '"></label>
 			</div>' : '<div class="custom-control custom-switch">
-			<input type="checkbox" class="custom-control-input" id="' . $no_urut . '" disabled>
-			<label class="custom-control-label" for="' . $no_urut . '"></label>
+			<input type="checkbox" class="custom-control-input" id="' . $get->kode_menu . '" disabled>
+			<label class="custom-control-label" for="' . $get->kode_menu . '"></label>
 			</div>';
 
 			$row[] = $no;
