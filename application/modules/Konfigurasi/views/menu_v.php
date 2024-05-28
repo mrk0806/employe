@@ -430,7 +430,7 @@
       $('#modal-lg').modal('show');
       $('#kode').prop('disabled', false);
       $('#btn_save').text('Add');
-      $('.modal-title').text('Add Menu');
+      $('.modal-title').text('Add <?= $nama_submenu ?>');
     }
 
     function hapus(id) {
@@ -478,7 +478,7 @@
             $('[name="nourut"]').val(data.no_urut);
             $('#modal-lg').modal('show');
             $('#btn_save').text('Edit');
-            $('.modal-title').text('Edit Menu');
+            $('.modal-title').text('Edit <?= $nama_submenu ?>');
           } else {
             alert('Error get data from ajax');
           }
@@ -490,7 +490,12 @@
       });
     }
 
-
+    function removeErrorOnChange(selector) {
+      $(selector).change(function() {
+        $(this).parent().removeClass('has-error');
+        $(this).next().empty();
+      });
+    }
 
     $(function() {
 
@@ -536,30 +541,12 @@
       });
 
 
-      $("#kode").change(function() {
-        $(this).parent().removeClass('has-error');
-        $(this).next().empty();
+      const selectors = ["#kode", "#nama", "#url", "#level", "#nourut"];
+
+      selectors.forEach(function(selector) {
+        removeErrorOnChange(selector);
       });
 
-      $("#nama").change(function() {
-        $(this).parent().removeClass('has-error');
-        $(this).next().empty();
-      });
-
-      $("#url").change(function() {
-        $(this).parent().removeClass('has-error');
-        $(this).next().empty();
-      });
-
-      $("#level").change(function() {
-        $(this).parent().removeClass('has-error');
-        $(this).next().empty();
-      });
-
-      $("#nourut").change(function() {
-        $(this).parent().removeClass('has-error');
-        $(this).next().empty();
-      });
     });
     </script>
 </body>

@@ -7,7 +7,7 @@ class Menu_sistem extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('menu_model', 'mm');
+		$this->load->model('menu_model', 'get_model');
 		cek_aktif_login();
 	}
 
@@ -21,24 +21,20 @@ class Menu_sistem extends CI_Controller
 		$data['data_user'] = get_user_data();
 
 		$this->load->view('menu_v', $data);
-		// $this->load->view('templates/header');
-		// $this->load->view('templates/main-sidebar', $data);
-		// $this->load->view('menu_sistem_v',$data);
-		// $this->load->view('templates/footer');
 	}
 
 	public function get_list()
 	{
-		$menus = $this->mm->get_menu();
+		$get_alls = $this->get_model->get_data_all();
 		$data = array();
 		$no = 0;
 
-		foreach ($menus as $menu) {
+		foreach ($get_alls as $get) {
 			$no++;
 			$row = array();
-			$no_urut = $menu->no_urut;
+			$no_urut = $get->no_urut;
 
-			$aktif = ($menu->aktif == 1) ? '<div class="custom-control custom-switch">
+			$aktif = ($get->aktif == 1) ? '<div class="custom-control custom-switch">
 			<input type="checkbox" class="custom-control-input" id="' . $no_urut . '" checked disabled>
 			<label class="custom-control-label" for="' . $no_urut . '"></label>
 			</div>' : '<div class="custom-control custom-switch">
@@ -47,16 +43,16 @@ class Menu_sistem extends CI_Controller
 			</div>';
 
 			$row[] = $no;
-			$row[] = $menu->kode_menu;
-			$row[] = $menu->nama_menu;
-			$row[] = $menu->level;
+			$row[] = strtolower($get->kode_menu);
+			$row[] = ucwords(strtolower($get->nama_menu));
+			$row[] = ucwords(strtolower($get->level));
 			$row[] = $aktif;
 			$row[] = '
-					<a class="btn btn-info btn-sm" href="javascript:void(0)" onclick="edit(' . "'" . $menu->kode_menu . "'" . ')">
+					<a class="btn btn-info btn-sm" href="javascript:void(0)" onclick="edit(' . "'" . $get->kode_menu . "'" . ')">
 						<i class="fas fa-pencil-alt"></i>
 						Edit
 					</a>
-					<a class="btn btn-danger btn-sm" href="javascript:void(0)" onclick="hapus(' . "'" . $menu->kode_menu . "'" . ')">
+					<a class="btn btn-danger btn-sm" href="javascript:void(0)" onclick="hapus(' . "'" . $get->kode_menu . "'" . ')">
 						<i class="fas fa-trash-alt"></i>
 						Delete
 					</a>';
@@ -85,7 +81,7 @@ class Menu_sistem extends CI_Controller
 			'nourut' => 'no_urut',
 			'status' => 'aktif',
 		);
-		$cek = $this->mm->cek_kode_menu($kode_menu);
+		$cek = $this->get_model->cek_data($kode_menu);
 
 		if ($cek) {
 			echo json_encode(array("status" => FALSE, "message" => "Kode already exists"));
@@ -95,7 +91,7 @@ class Menu_sistem extends CI_Controller
 		$data = get_post_data($fields);
 		$data['tanggal'] = date('Y-m-d H:i:s');
 
-		$insert = $this->mm->save($data);
+		$insert = $this->get_model->save($data);
 
 		// Adding to log
 		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
@@ -129,7 +125,7 @@ class Menu_sistem extends CI_Controller
 		$data = get_post_data($fields);
 		$data['tanggal'] = date('Y-m-d H:i:s');
 
-		$update = $this->mm->update(array('kode_menu' => $this->input->post('kode')), $data);
+		$update = $this->get_model->update(array('kode_menu' => $this->input->post('kode')), $data);
 
 		// Adding to log
 		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
@@ -148,8 +144,8 @@ class Menu_sistem extends CI_Controller
 
 	public function delete($id)
 	{
-		$data =  $this->mm->get_menu_bykode($id);
-		$delete = $this->mm->delete($id);
+		$data =  $this->get_model->get_data_by($id);
+		$delete = $this->get_model->delete($id);
 
 		// Adding to log
 		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
@@ -169,10 +165,10 @@ class Menu_sistem extends CI_Controller
 
 	public function edit($id)
 	{
-		$menu = $this->mm->get_menu_bykode($id);
+		$data = $this->get_model->get_data_by($id);
 		$output = array(
 			"status" => "success",
-			"data" => $menu
+			"data" => $data
 		);
 
 		echo json_encode($output);

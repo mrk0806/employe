@@ -72,7 +72,9 @@ if (!function_exists('get_post_data')) {
 
         $data = array();
         foreach ($fields as $form_field => $db_field) {
-            $data[$db_field] = html_escape($ci->input->post($form_field));
+            // $data[$db_field] = html_escape($ci->input->post($form_field));
+            $value = html_escape($ci->input->post($form_field));
+            $data[$db_field] = $value === null ? '' : $value;
         }
         return $data;
     }

@@ -3,7 +3,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Menu_model extends CI_Model
 {
-    var $table = 'menu';
+    protected $table = 'menu'; //nama tabel
+    protected $pk = 'kode_menu'; //primary key
+    protected $columns = ['kode_menu, nama_menu, url, icon, main_menu, no_urut, level, aktif']; //nama field
+
 
     public function save($data)
     {
@@ -17,29 +20,32 @@ class Menu_model extends CI_Model
         return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
     }
 
-    public function delete($kode)
+    public function delete($pk)
     {
-        $this->db->where('kode_menu', $kode);
+        $this->db->where($this->pk, $pk);
         $this->db->delete($this->table);
         return ($this->db->affected_rows() > 0) ? true : false;
     }
 
-    public function get_menu()
+    public function get_data_all($columns = array())
     {
-        return $this->db->select('kode_menu, nama_menu, url, icon, main_menu, no_urut, level, aktif')
-            ->order_by('no_urut', 'ASC')
+        $selects = (empty($columns)) ? $this->columns : $columns;
+        $select = implode(',', $selects);
+
+        return $this->db->select($select)
+            ->order_by($this->pk, 'ASC')
             ->get($this->table)
             ->result();
     }
 
-    public function get_menu_bykode($kode)
+    public function get_data_by($pk)
     {
-        return $this->db->get_where($this->table, array('kode_menu' => $kode))->row();
+        return $this->db->get_where($this->table, array($this->pk => $pk))->row();
     }
 
-    public function cek_kode_menu($kode)
+    public function cek_data($pk)
     {
-        $result = $this->db->get_where($this->table, array('kode_menu' => $kode))->row();
+        $result = $this->db->get_where($this->table, array($this->pk => $pk))->row();
         return ($result) ? true : false;
     }
 }
