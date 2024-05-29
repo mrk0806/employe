@@ -29,7 +29,7 @@ class Akses_model extends CI_Model
   {
     $this->db->where($this->pk, $pk);
     $this->db->delete($this->table);
-    return ($this->db->affected_rows() > 0) ? true : false;
+    return ($this->db->affected_rows() > 0)  ? TRUE : FALSE;
   }
 
   public function get_data_all($columns = array())
@@ -59,17 +59,13 @@ class Akses_model extends CI_Model
     $selects = (empty($columns)) ? $this->columns_join : $columns;
     $select = implode(',', $selects);
 
-    // return $this->db->select($select)
-    //   ->order_by($this->pk, 'ASC')
-    //   ->get_where($this->table, array($this->pk2 => $where))
-    //   ->result();
     return $this->db->select($select)
-                  ->from($this->table)
-                  ->join($this->table2, "$this->table2.$this->pk3 = $this->table.$this->pk3")
-                  ->where(array($this->pk2 => $where))
-                  ->order_by($this->pk, 'ASC')
-                  ->get()
-                  ->result();
+      ->from($this->table)
+      ->join($this->table2, "$this->table2.$this->pk3 = $this->table.$this->pk3")
+      ->where(array($this->pk2 => $where))
+      ->order_by($this->pk, 'ASC')
+      ->get()
+      ->result();
   }
 
   public function get_data_by($pk)
@@ -80,6 +76,6 @@ class Akses_model extends CI_Model
   public function cek_data($pk)
   {
     $result = $this->db->get_where($this->table, array($this->pk => $pk))->row();
-    return ($result) ? true : false;
+    return ($result) ? TRUE : FALSE;
   }
 }

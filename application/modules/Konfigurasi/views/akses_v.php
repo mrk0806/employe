@@ -200,9 +200,9 @@
                   <table id="tableMenu" class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                      <th>No</th>
-                      <th>Level User</th>
-                      <th>Action</th>
+                        <th>No</th>
+                        <th>Level User</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -231,329 +231,163 @@
       <strong>Copyright &copy; 2014-<?= date('Y'); ?> <a href="#"><?= COMPANY_NAME ?></a>.</strong>
     </footer>
 
-    <!-- /.modal -->
-    <div class="modal fade" id="modal-lg-2">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Large Modal</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
 
-            <form action="" method="post" id="menuForm">
-
-              <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Kode</label>
-                <div class="col-sm-8">
-                  <input type="text" name="kode" id="kode" class="form-control" required="required">
-                  <span class="help-block"></span>
-                </div>
-              </div>
-
-              <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Level User</label>
-                <div class="col-sm-8">
-                  <select class="custom-select rounded-0" name="level" id="level">
-                    <option value="" selected disabled>-- pilih --</option>
-                    <option value="admin">Admin</option>
-                    <option value="karyawan">Karyawan</option>
-                  </select>
-                  <span class="help-block"></span>
-                </div>
-              </div>
-
-              <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Akses</label>
-                <div class="col-sm-8">
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="akses">
-                    <label class="custom-control-label" for="akses"></label>
-                  </div>
-                  <span class="help-block"></span>
-                </div>
-              </div>
-
-              <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Tambah</label>
-                <div class="col-sm-8">
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="tambah">
-                    <label class="custom-control-label" for="tambah"></label>
-                  </div>
-                  <span class="help-block"></span>
-                </div>
-              </div>
-
-              <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Edit</label>
-                <div class="col-sm-8">
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="edit">
-                    <label class="custom-control-label" for="edit"></label>
-                  </div>
-                  <span class="help-block"></span>
-                </div>
-              </div>
-
-              <div class="form-group row mb-3">
-                <label class="col-sm-4 col-form-label">Hapus</label>
-                <div class="col-sm-8">
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="hapus">
-                    <label class="custom-control-label" for="hapus"></label>
-                  </div>
-                  <span class="help-block"></span>
-                </div>
-              </div>
-           
-            </form>
-
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="btn_save" onclick="save()">Save changes</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
+  <!-- /.modal -->
+  <div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Large Modal</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
+        <div class="modal-body">
+          <table id="tableMenu2" class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Kode Menu</th>
+                <th>Level User</th>
+                <th>Akses</th>
+                <th>Tambah</th>
+                <th>Edit</th>
+                <th>Hapus</th>
+              </tr>
+            </thead>
+            <tbody>
 
-      <!-- Control Sidebar -->
-      <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-      </aside>
-      <!-- /.control-sidebar -->
-    </div>
+            </tbody>
 
-    <!-- /.modal -->
-    <div class="modal fade" id="modal-lg">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Large Modal</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+          </table>
+          <div class="modal-footer justify-content-between">
           </div>
-          <div class="modal-body">
-            <a class="btn btn-info btn-sm" href="javascript:void(0)" onclick="add_akses()">
-              <i class="fas fa-plus"></i>
-              Add Akses
-            </a>
-            </br>
-            <table id="tableMenu2" class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Kode Menu</th>
-                  <th>Level User</th>
-                  <th>Akses</th>
-                  <th>Tambah</th>
-                  <th>Edit</th>
-                  <th>Hapus</th>
-                </tr>
-              </thead>
-              <tbody>
-
-              </tbody>
-
-            </table>
-            <div class="modal-footer justify-content-between">
-            </div>
-          </div>
-          <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
+        <!-- /.modal-content -->
       </div>
-      <!-- /.modal -->
-
-      <!-- Control Sidebar -->
-      <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-      </aside>
-      <!-- /.control-sidebar -->
+      <!-- /.modal-dialog -->
     </div>
-    <!-- ./wrapper -->
+    <!-- /.modal -->
 
-    <!-- jQuery -->
-    <script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="<?= base_url() ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- DataTables  & Plugins -->
-    <script src="<?= base_url() ?>assets/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/jszip/jszip.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="<?= base_url() ?>assets/dist/js/adminlte.min.js"></script>
-    <!-- Page specific script -->
-    <script>
-    let save_method;
-    let save_url;
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+  <!-- jQuery -->
+  <script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="<?= base_url() ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- DataTables  & Plugins -->
+  <script src="<?= base_url() ?>assets/plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/jszip/jszip.min.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="<?= base_url() ?>assets/dist/js/adminlte.min.js"></script>
+  <!-- Page specific script -->
+  <script>
+  function reload() {
+    table.ajax.reload(null, false);
+  }
 
 
-    function resetForm() {
-      $('#menuForm')[0].reset();
-      $("#btn_save").attr('disabled', false);
-      $('.help-block').empty();
-    }
+  function edit(id) {
+    $('#modal-lg').modal('show');
+    $('.modal-title').text('Edit <?= $nama_submenu ?>');
+    $('#tableMenu2').DataTable().ajax.url(
+      "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>edit/" + id
+    ).load();
+  }
 
-    function reload() {
-      table.ajax.reload(null, false);
-    }
 
-    function add_akses() {
-      $('#modal-lg').modal('hide');
-      $('#modal-lg-2').modal('show');
-      $('.modal-title').text('Add <?= $nama_submenu ?>');
-    }
+  function update(id, isChecked) {
+    let data = id.split('|');
 
-    function save() {
-      $("#btn_save").html(
-        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
-      $("#btn_save").attr('disabled', true);
-      $('#kode').prop('disabled', false);
-      let data_save = $('#menuForm').serializeArray();
+    let kode = data[0];
+    let inisial = data[1];
+    let status = isChecked ? 1 : 0;
 
-      let statusValue = $('#status').is(':checked') ? 1 : 0;
-      data_save.push({
-        name: 'status',
-        value: statusValue
-      });
+    $.ajax({
+      url: "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>updateAkses",
+      type: "POST",
+      data: {
+        id: kode,
+        inisial: inisial,
+        status: status
+      },
+      dataType: "JSON",
+      success: function(result) {
+        console.log(result);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert('Error get data from ajax');
+      }
+    });
+  }
 
-      $.ajax({
-        url: "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>add",
-        type: "POST",
-        data: data_save,
-        dataType: "JSON",
-        success: function(result) {
-          console.log(result);
-          let data = result;
-          if (result.status) {
-            alert(result.message);
-            $('#modal-lg').modal('hide');
-            reload();
-          } else {
-            if (result.inputerror) {
-              for (var i = 0; i < data.inputerror.length; i++) {
-                $('[name="' + data.inputerror[i] + '"]').parent().addClass('text-danger');
-                $('[name="' + data.inputerror[i] + '"]').next().text(data.error_string[i]);
-              }
-            } else {
-              alert(result.message);
-            }
-            $('#btn_save').text('Save');
-            $('#btn_save').attr('disabled', false);
-          }
+
+
+  $(function() {
+
+    $('#tableMenu2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true
+    });
+
+    table = $('#tableMenu').DataTable({
+      "buttons": ["copy", "excel", "pdf"],
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+      "ajax": {
+        "url": "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>get_list",
+        "type": "POST",
+      },
+      "aoColumns": [{
+          "No": "No",
+          "sClass": "text-center"
         },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('Error get data from ajax');
+        {
+          "level": "level",
+          "sClass": "text-left"
+        },
+        {
+          "#": "#",
+          "sClass": "text-center"
         }
-      });
-    }
-
-   
-    function edit(id) {
-      $('#modal-lg').modal('show');
-      $('.modal-title').text('Edit <?= $nama_submenu ?>');
-      $('#tableMenu2').DataTable().ajax.url("<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>edit_akses/" + id).load();
-    }
-
-    function removeErrorOnChange(selector) {
-      $(selector).change(function() {
-        $(this).parent().removeClass('has-error');
-        $(this).next().empty();
-      });
-    }
-
-    function updateAkses(id, isChecked){
-      let data = id.split('|');
-
-      let kode = data[0];
-      let inisial = data[1];
-      let status = isChecked ? 1:0;
-
-      $.ajax({
-        url: "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>updateAkses",
-        type: "POST",
-        data: {
-          id : kode,
-          inisial : inisial,
-          status : status
-        },
-        dataType: "JSON",
-        success: function(result) {
-          console.log(result);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('Error get data from ajax');
-        }
-      });
-    }
-    
-
-
-    $(function() {
-      
-        $('#tableMenu2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true
-        });
-
-      table = $('#tableMenu').DataTable({
-        "buttons": ["copy", "excel", "pdf"],
-        "paging": true,
-        "lengthChange": false,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-        "ajax": {
-          "url": "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>get_list",
-          "type": "POST",
-        },
-        "aoColumns": [{
-            "No": "No",
-            "sClass": "text-center"
-          },
-          {
-            "level": "level",
-            "sClass": "text-left"
-          },
-          {
-            "#": "#",
-            "sClass": "text-center"
-          }
-        ],
-
-      });
-
-      const selectors = ["#kode", "#nama", "#url", "#level", "#nourut"];
-
-      selectors.forEach(function(selector) {
-        removeErrorOnChange(selector);
-      });
+      ],
 
     });
-    </script>
+
+  });
+  </script>
 </body>
 
 </html>

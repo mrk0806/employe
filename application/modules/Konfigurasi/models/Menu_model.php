@@ -24,7 +24,7 @@ class Menu_model extends CI_Model
     {
         $this->db->where($this->pk, $pk);
         $this->db->delete($this->table);
-        return ($this->db->affected_rows() > 0) ? true : false;
+        return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
     }
 
     public function get_data_all($columns = array())

@@ -8,6 +8,7 @@ class Menu_sistem extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('menu_model', 'get_model');
+		$this->load->model('akses_model');
 		cek_aktif_login();
 	}
 
@@ -23,9 +24,10 @@ class Menu_sistem extends CI_Controller
 		$this->load->view('menu_v', $data);
 	}
 
-	private function generateSwitch($akses, $id) {
+	private function generateSwitch($akses, $id)
+	{
 		$isChecked = ($akses == 1) ? 'checked' : '';
-		
+
 		return '
 		<div class="custom-control custom-switch">
 			<input type="checkbox" class="custom-control-input" id="' . $id . '" ' . $isChecked . ' disabled>
@@ -71,7 +73,7 @@ class Menu_sistem extends CI_Controller
 	public function add()
 	{
 		$cek_akses = cek_akses_menu(__FUNCTION__);
-		if($cek_akses){
+		if ($cek_akses) {
 			$this->_validate();
 			$kode_menu = $this->input->post('kode');
 
@@ -84,6 +86,7 @@ class Menu_sistem extends CI_Controller
 				'mainmenu' => 'main_menu',
 				'nourut' => 'no_urut',
 				'status' => 'aktif',
+				'user' => $this->session->userdata('user_logged')['nik']
 			);
 			$cek = $this->get_model->cek_data($kode_menu);
 
@@ -95,22 +98,52 @@ class Menu_sistem extends CI_Controller
 			$data = get_post_data($fields);
 			$data['tanggal'] = date('Y-m-d H:i:s');
 
+			// Start transaction
+			$this->db->trans_begin();
+
 			$insert = $this->get_model->save($data);
 
-			// Adding to log
-			$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-			$log_type = "ADD";
-			$log_data = json_encode($data);
-
-			log_helper($log_url, $log_type, $log_data);
-			// End log
-
 			if ($insert) {
+				// Insert associated akses records
+				$level_users = array('admin', 'karyawan');
+
+				foreach ($level_users as $level) {
+					$akses_data = array(
+						'kode_menu' => $data['kode_menu'],
+						'level_user' => $level,
+						'akses' => 0,
+						'add' => 0,
+						'edit' => 0,
+						'delete' => 0
+					);
+
+					$akses_inserted = $this->akses_model->save($akses_data);
+
+					if (!$akses_inserted) {
+						// Rollback transaction if any insert into 'akses' fails
+						$this->db->trans_rollback();
+						echo json_encode(array("status" => FALSE, "message" => "Failed to insert access data"));
+						return;
+					}
+				}
+
+				// Commit transaction if all inserts are successful
+				$this->db->trans_commit();
+
+				// Adding to log
+				$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
+				$log_type = "ADD";
+				$log_data = json_encode($data);
+				log_helper($log_url, $log_type, $log_data);
+				// End log
+
 				echo json_encode(array("status" => TRUE, "message" => "Data successfully inserted"));
 			} else {
+				// Rollback transaction if insert into 'menu' fails
+				$this->db->trans_rollback();
 				echo json_encode(array("status" => FALSE, "message" => "Failed to insert data"));
 			}
-		}else{
+		} else {
 			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
 		}
 	}
@@ -118,60 +151,79 @@ class Menu_sistem extends CI_Controller
 	public function update()
 	{
 		$this->_validate();
-		
 
-			$fields = array(
-				'nama' => 'nama_menu',
-				'url' => 'url',
-				'icon' => 'icon',
-				'level' => 'level',
-				'mainmenu' => 'main_menu',
-				'nourut' => 'no_urut',
-				'status' => 'aktif',
-			);
-	
-			$data = get_post_data($fields);
-			$data['tanggal'] = date('Y-m-d H:i:s');
-	
-			$update = $this->get_model->update(array('kode_menu' => $this->input->post('kode')), $data);
-	
-			// Adding to log
-			$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-			$log_type = "UPDATE";
-			$log_data = json_encode($data);
-	
-			log_helper($log_url, $log_type, $log_data);
-			// End log
-	
-			if ($update) {
-				echo json_encode(array("status" => TRUE, "message" => "Data successfully updated"));
-			} else {
-				echo json_encode(array("status" => FALSE, "message" => "Failed to update data"));
-			}
 
+		$fields = array(
+			'nama' => 'nama_menu',
+			'url' => 'url',
+			'icon' => 'icon',
+			'level' => 'level',
+			'mainmenu' => 'main_menu',
+			'nourut' => 'no_urut',
+			'status' => 'aktif',
+		);
+
+		$data = get_post_data($fields);
+		$data['tanggal'] = date('Y-m-d H:i:s');
+
+		$update = $this->get_model->update(array('kode_menu' => $this->input->post('kode')), $data);
+
+		// Adding to log
+		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
+		$log_type = "UPDATE";
+		$log_data = json_encode($data);
+
+		log_helper($log_url, $log_type, $log_data);
+		// End log
+
+		if ($update) {
+			echo json_encode(array("status" => TRUE, "message" => "Data successfully updated"));
+		} else {
+			echo json_encode(array("status" => FALSE, "message" => "Failed to update data"));
+		}
 	}
 
 	public function delete($id)
 	{
 		$cek_akses = cek_akses_menu(__FUNCTION__);
-		if($cek_akses){
+		if ($cek_akses) {
+			// Mulai transaksi
+			$this->db->trans_begin();
+
+			// Mengambil data sebelum dihapus untuk keperluan log
 			$data =  $this->get_model->get_data_by($id);
-			$delete = $this->get_model->delete($id);
 
-			// Adding to log
-			$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-			$log_type = "DELETE";
-			$log_data = json_encode($data);
+			// Menghapus dari tabel 'akses'
+			$this->db->where('kode_menu', $id);
+			$this->db->delete('akses');
+			$akses_deleted = $this->db->affected_rows() > 0;
 
-			log_helper($log_url, $log_type, $log_data);
-			// End log
+			if ($akses_deleted) {
+				// Menghapus dari tabel 'menu'
+				$delete = $this->get_model->delete($id);
 
-			if ($delete) {
-				echo json_encode(array("status" => TRUE, "message" => "Data successfully deleted"));
+				if ($delete) {
+					// Commit transaksi jika semua penghapusan berhasil
+					$this->db->trans_commit();
+
+					// Menambahkan ke log
+					$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
+					$log_type = "DELETE";
+					$log_data = json_encode($data);
+					log_helper($log_url, $log_type, $log_data);
+					// Akhir log
+					echo json_encode(array("status" => TRUE, "message" => "Data successfully deleted"));
+				} else {
+					// Rollback transaksi jika penghapusan dari 'menu' gagal
+					$this->db->trans_rollback();
+					echo json_encode(array("status" => FALSE, "message" => "Failed to deleted data"));
+				}
 			} else {
-				echo json_encode(array("status" => FALSE, "message" => "Failed to deleted data"));
+				// Rollback transaksi jika penghapusan dari 'akses' gagal
+				$this->db->trans_rollback();
+				echo json_encode(array("status" => FALSE, "message" => "Failed to deleted data entri akses"));
 			}
-		}else{
+		} else {
 			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
 		}
 	}
@@ -180,7 +232,7 @@ class Menu_sistem extends CI_Controller
 	public function edit($id)
 	{
 		$cek_akses = cek_akses_menu(__FUNCTION__);
-		if($cek_akses){
+		if ($cek_akses) {
 
 			$data = $this->get_model->get_data_by($id);
 			$output = array(
@@ -188,8 +240,7 @@ class Menu_sistem extends CI_Controller
 				"data" => $data
 			);
 			echo json_encode($output);
-
-		}else{
+		} else {
 			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
 		}
 	}

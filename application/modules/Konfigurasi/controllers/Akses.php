@@ -22,7 +22,8 @@ class Akses extends CI_Controller
 		$this->load->view('akses_v', $data);
 	}
 
-	public function get_list_all(){
+	public function get_list_all()
+	{
 		$get_alls = $this->get_model->get_data_all();
 		$data = array();
 		$no = 0;
@@ -79,138 +80,49 @@ class Akses extends CI_Controller
 		echo json_encode($output);
 	}
 
-	public function add()
+
+	private function generateSwitch($akses, $id)
 	{
-		$this->_validate();
-		$kode_menu = $this->input->post('kode');
-
-		$fields = array(
-			'kode' => 'kode_menu',
-			'nama' => 'nama_menu',
-			'url' => 'url',
-			'icon' => 'icon',
-			'level' => 'level',
-			'mainmenu' => 'main_menu',
-			'nourut' => 'no_urut',
-			'status' => 'aktif',
-		);
-		$cek = $this->get_model->cek_data($kode_menu);
-
-		if ($cek) {
-			echo json_encode(array("status" => FALSE, "message" => "Kode already exists"));
-			return;
-		}
-
-		$data = get_post_data($fields);
-		$data['tanggal'] = date('Y-m-d H:i:s');
-
-		$insert = $this->get_model->save($data);
-
-		// Adding to log
-		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-		$log_type = "ADD";
-		$log_data = json_encode($data);
-
-		log_helper($log_url, $log_type, $log_data);
-		// End log
-
-		if ($insert) {
-			echo json_encode(array("status" => TRUE, "message" => "Data successfully inserted"));
-		} else {
-			echo json_encode(array("status" => FALSE, "message" => "Failed to insert data"));
-		}
-	}
-
-	public function update()
-	{
-		$this->_validate();
-
-		$fields = array(
-			'nama' => 'nama_menu',
-			'url' => 'url',
-			'icon' => 'icon',
-			'level' => 'level',
-			'mainmenu' => 'main_menu',
-			'nourut' => 'no_urut',
-			'status' => 'aktif',
-		);
-
-		$data = get_post_data($fields);
-		$data['tanggal'] = date('Y-m-d H:i:s');
-
-		$update = $this->get_model->update(array('kode_menu' => $this->input->post('kode')), $data);
-		$data['kode_menu'] = $this->input->post('kode');
-		// Adding to log
-		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-		$log_type = "UPDATE";
-		$log_data = json_encode($data);
-
-		log_helper($log_url, $log_type, $log_data);
-		// End log
-
-		if ($update) {
-			echo json_encode(array("status" => TRUE, "message" => "Data successfully updated"));
-		} else {
-			echo json_encode(array("status" => FALSE, "message" => "Failed to update data"));
-		}
-	}
-
-	public function delete($id)
-	{
-		$data =  $this->get_model->get_data_by($id);
-		$delete = $this->get_model->delete($id);
-
-		// Adding to log
-		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-		$log_type = "DELETE";
-		$log_data = json_encode($data);
-
-		log_helper($log_url, $log_type, $log_data);
-		// End log
-
-		if ($delete) {
-			echo json_encode(array("status" => TRUE, "message" => "Data successfully deleted"));
-		} else {
-			echo json_encode(array("status" => FALSE, "message" => "Failed to deleted data"));
-		}
-	}
-
-	private function generateSwitch($akses, $id) {
 		$isChecked = ($akses == 1) ? 'checked' : '';
 		$initial = "'$id'";
 		return '
 		<div class="custom-control custom-switch">
-			<input type="checkbox" class="custom-control-input" onclick="updateAkses('.$initial.', this.checked)" id="' . $id . '" ' . $isChecked . ' >
+			<input type="checkbox" class="custom-control-input" onclick="updateAkses(' . $initial . ', this.checked)" id="' . $id . '" ' . $isChecked . ' >
 			<label class="custom-control-label" for="' . $id . '"></label>
 		</div>';
 	}
 
-	public function updateAkses(){
-		$kolom = $this->input->post('inisial');
-		$value = $this->input->post('status');
-		$data = array(
-			$kolom => $value
-		);
-		$update = $this->get_model->update(array('id' => $this->input->post('id')), $data);
-		$data['id'] = $this->input->post('id');
-		// Adding to log
-		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-		$log_type = "UPDATE";
-		$log_data = json_encode($data);
+	public function update()
+	{
+		$cek_akses = cek_akses_menu(__FUNCTION__);
+		if ($cek_akses) {
+			$kolom = $this->input->post('inisial');
+			$value = $this->input->post('status');
+			$data = array(
+				$kolom => $value
+			);
+			$update = $this->get_model->update(array('id' => $this->input->post('id')), $data);
+			$data['id'] = $this->input->post('id');
+			// Adding to log
+			$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
+			$log_type = "UPDATE";
+			$log_data = json_encode($data);
 
-		log_helper($log_url, $log_type, $log_data);
-		// End log
+			log_helper($log_url, $log_type, $log_data);
+			// End log
 
-		if ($update) {
-			echo json_encode(array("status" => TRUE, "message" => "Data successfully updated"));
+			if ($update) {
+				echo json_encode(array("status" => TRUE, "message" => "Data successfully updated"));
+			} else {
+				echo json_encode(array("status" => FALSE, "message" => "Failed to update data"));
+			}
 		} else {
-			echo json_encode(array("status" => FALSE, "message" => "Failed to update data"));
+			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
 		}
-
 	}
 
 
-	public function edit_akses($id)
+	public function edit($id)
 	{
 		$get_alls = $this->get_model->get_data_all_by(null, $id);
 		$data = array();
@@ -220,10 +132,10 @@ class Akses extends CI_Controller
 			$no++;
 			$row = array();
 
-			$akses 	=  $this->generateSwitch($get->akses, $get->id."|akses");
-			$tambah = ($get->level == 'main_menu') ? '' : $this->generateSwitch($get->add,$get->id."|add");
-			$edit 	= ($get->level == 'main_menu') ? '' :  $this->generateSwitch($get->edit, $get->id."|edit");
-			$hapus 	= ($get->level == 'main_menu') ? '' :  $this->generateSwitch($get->delete, $get->id."|delete");
+			$akses 	=  $this->generateSwitch($get->akses, $get->id . "|akses");
+			$tambah = ($get->level == 'main_menu') ? '' : $this->generateSwitch($get->add, $get->id . "|add");
+			$edit 	= ($get->level == 'main_menu') ? '' :  $this->generateSwitch($get->edit, $get->id . "|edit");
+			$hapus 	= ($get->level == 'main_menu') ? '' :  $this->generateSwitch($get->delete, $get->id . "|delete");
 
 			$row[] = $no;
 			$row[] = strtolower($get->kode_menu);
@@ -240,18 +152,5 @@ class Akses extends CI_Controller
 		);
 
 		echo json_encode($output);
-	}
-
-	private function _validate()
-	{
-		$inputs = array(
-			'kode' => 'Kode is required',
-			'nama' => 'Nama is required',
-			'url' => 'URL is required',
-			'level' => 'Level is required',
-			'nourut' => 'No Urut is required'
-		);
-
-		validate_inputs($inputs);
 	}
 }

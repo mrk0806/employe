@@ -62,41 +62,46 @@ class Data_karyawan extends CI_Controller
 
 	public function add()
 	{
-		$this->_validate();
-		$nik = $this->input->post('nik');
+		$cek_akses = cek_akses_menu(__FUNCTION__);
+		if ($cek_akses) {
+			$this->_validate();
+			$nik = $this->input->post('nik');
 
-		$fields = array(
-			'nik' => 'nik',
-			'nama' => 'nama_lengkap',
-			'tgl_lhr' => 'tgl_lahir',
-			'tgl_msk' => 'tgl_masuk',
-			'tgl_klr' => 'tgl_keluar',
-			'divisi' => 'divisi',
-		);
+			$fields = array(
+				'nik' => 'nik',
+				'nama' => 'nama_lengkap',
+				'tgl_lhr' => 'tgl_lahir',
+				'tgl_msk' => 'tgl_masuk',
+				'tgl_klr' => 'tgl_keluar',
+				'divisi' => 'divisi',
+			);
 
-		$cek = $this->get_model->cek_data($nik);
+			$cek = $this->get_model->cek_data($nik);
 
-		if ($cek) {
-			echo json_encode(array("status" => FALSE, "message" => "$nik already exists"));
-			return;
-		}
+			if ($cek) {
+				echo json_encode(array("status" => FALSE, "message" => "$nik already exists"));
+				return;
+			}
 
-		$data = get_post_data($fields);
+			$data = get_post_data($fields);
 
-		$insert = $this->get_model->save($data);
+			$insert = $this->get_model->save($data);
 
-		// Adding to log
-		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-		$log_type = "ADD";
-		$log_data = json_encode($data);
+			// Adding to log
+			$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
+			$log_type = "ADD";
+			$log_data = json_encode($data);
 
-		log_helper($log_url, $log_type, $log_data);
-		// End log
+			log_helper($log_url, $log_type, $log_data);
+			// End log
 
-		if ($insert) {
-			echo json_encode(array("status" => TRUE, "message" => "Data successfully inserted"));
+			if ($insert) {
+				echo json_encode(array("status" => TRUE, "message" => "Data successfully inserted"));
+			} else {
+				echo json_encode(array("status" => FALSE, "message" => "Failed to insert data"));
+			}
 		} else {
-			echo json_encode(array("status" => FALSE, "message" => "Failed to insert data"));
+			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
 		}
 	}
 
@@ -133,34 +138,44 @@ class Data_karyawan extends CI_Controller
 
 	public function delete($id)
 	{
-		$data =  $this->get_model->get_data_by($id);
-		$delete = $this->get_model->delete($id);
+		$cek_akses = cek_akses_menu(__FUNCTION__);
+		if ($cek_akses) {
+			$data =  $this->get_model->get_data_by($id);
+			$delete = $this->get_model->delete($id);
 
-		// Adding to log
-		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-		$log_type = "DELETE";
-		$log_data = json_encode($data);
+			// Adding to log
+			$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
+			$log_type = "DELETE";
+			$log_data = json_encode($data);
 
-		log_helper($log_url, $log_type, $log_data);
-		// End log
+			log_helper($log_url, $log_type, $log_data);
+			// End log
 
-		if ($delete) {
-			echo json_encode(array("status" => TRUE, "message" => "Data successfully deleted"));
+			if ($delete) {
+				echo json_encode(array("status" => TRUE, "message" => "Data successfully deleted"));
+			} else {
+				echo json_encode(array("status" => FALSE, "message" => "Failed to deleted data"));
+			}
 		} else {
-			echo json_encode(array("status" => FALSE, "message" => "Failed to deleted data"));
+			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
 		}
 	}
 
 
 	public function edit($id)
 	{
-		$data = $this->get_model->get_data_by($id);
-		$output = array(
-			"status" => "success",
-			"data" => $data
-		);
+		$cek_akses = cek_akses_menu(__FUNCTION__);
+		if ($cek_akses) {
+			$data = $this->get_model->get_data_by($id);
+			$output = array(
+				"status" => "success",
+				"data" => $data
+			);
 
-		echo json_encode($output);
+			echo json_encode($output);
+		} else {
+			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
+		}
 	}
 
 	private function _validate()
