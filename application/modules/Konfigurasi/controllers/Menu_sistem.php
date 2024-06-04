@@ -86,7 +86,7 @@ class Menu_sistem extends CI_Controller
 				'mainmenu' => 'main_menu',
 				'nourut' => 'no_urut',
 				'status' => 'aktif',
-				'user' => $this->session->userdata('user_logged')['nik']
+				
 			);
 			$cek = $this->get_model->cek_data($kode_menu);
 
@@ -97,7 +97,9 @@ class Menu_sistem extends CI_Controller
 
 			$data = get_post_data($fields);
 			$data['tanggal'] = date('Y-m-d H:i:s');
+			$data['user'] = $this->session->userdata('user_logged')['nik'];
 
+			// var_dump($data);exit;
 			// Start transaction
 			$this->db->trans_begin();
 

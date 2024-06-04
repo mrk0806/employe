@@ -14,15 +14,29 @@ class Login extends CI_Controller {
     public function index()
     {
         if($this->auth->isLogin());
-        $this->load->view('login_v');
+        $remember               = get_cookie("remember");
+        $nik                    = get_cookie("nik");
+        $data['remember']       = $remember == 'on' ? 'checked' : '';
+        $data['nik']            = $nik == '' ? '' : $nik;
+        $this->load->view('login_v',$data);
     }
 
     
     public function auth()
     {
         $now = date('Y-m-d H:i:s');
-        $nik = $this->input->post('nik', TRUE);
-        $password = $this->input->post('password', TRUE);
+        $nik = htmlspecialchars($this->input->post('nik', TRUE));
+        $password = htmlspecialchars($this->input->post('password', TRUE));
+
+        $remember     = htmlspecialchars($this->input->post('remember'));   
+
+            if ($remember == 'on') {
+                set_cookie('nik', $nik, '2592000');
+                set_cookie('remember',$remember, '2592000');
+            } else {
+                delete_cookie('nik');
+                delete_cookie('remember');
+            }
 
         $cek = $this->user->check_user($nik);
         if ($cek > 0) {

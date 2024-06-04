@@ -15,15 +15,12 @@ class Dashboard extends CI_Controller
 	{
 		$data['main_menu'] = main_menu();
 		$data['sub_menu'] = sub_menu();
+
+		$data['nama_menu'] = 'Dashboard';
+		$data['nama_submenu'] = 'Dashboard';
+		
 		$data['data_user']= get_user_data();
 		
-		
-		// var_dump(cek_akses_user());exit;
-		// $this->load->view('dashboard_v', $data);
-		$this->load->view('templates/header');
-		$this->load->view('templates/main-sidebar', $data);
-		// $this->load->view('templates/content');
-		$this->load->view('dashboard_v');
-		$this->load->view('templates/footer');
+		$this->load->view('dashboard_v',$data);
 	}
 }

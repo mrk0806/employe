@@ -17,6 +17,7 @@ class Akses extends CI_Controller
 
 		$data['nama_menu'] = 'Konfigurasi';
 		$data['nama_submenu'] = 'Akses';
+		
 		$data['data_user'] = get_user_data();
 
 		$this->load->view('akses_v', $data);
@@ -87,20 +88,24 @@ class Akses extends CI_Controller
 		$initial = "'$id'";
 		return '
 		<div class="custom-control custom-switch">
-			<input type="checkbox" class="custom-control-input" onclick="updateAkses(' . $initial . ', this.checked)" id="' . $id . '" ' . $isChecked . ' >
+			<input type="checkbox" class="custom-control-input" onclick="update(' . $initial . ', this.checked)" data-id="'.$initial.'" id="' . $id . '" ' . $isChecked . ' >
 			<label class="custom-control-label" for="' . $id . '"></label>
 		</div>';
 	}
 
-	public function update()
+	public function edit()
 	{
 		$cek_akses = cek_akses_menu(__FUNCTION__);
 		if ($cek_akses) {
+			
 			$kolom = $this->input->post('inisial');
 			$value = $this->input->post('status');
+			
 			$data = array(
 				$kolom => $value
 			);
+			
+
 			$update = $this->get_model->update(array('id' => $this->input->post('id')), $data);
 			$data['id'] = $this->input->post('id');
 			// Adding to log
@@ -122,7 +127,7 @@ class Akses extends CI_Controller
 	}
 
 
-	public function edit($id)
+	public function edit_akses($id)
 	{
 		$get_alls = $this->get_model->get_data_all_by(null, $id);
 		$data = array();
@@ -131,7 +136,6 @@ class Akses extends CI_Controller
 		foreach ($get_alls as $get) {
 			$no++;
 			$row = array();
-
 			$akses 	=  $this->generateSwitch($get->akses, $get->id . "|akses");
 			$tambah = ($get->level == 'main_menu') ? '' : $this->generateSwitch($get->add, $get->id . "|add");
 			$edit 	= ($get->level == 'main_menu') ? '' :  $this->generateSwitch($get->edit, $get->id . "|edit");
@@ -139,6 +143,7 @@ class Akses extends CI_Controller
 
 			$row[] = $no;
 			$row[] = strtolower($get->kode_menu);
+			$row[] = ucwords(strtolower($get->nama_menu));
 			$row[] = ucwords(strtolower($get->level_user));
 			$row[] = $akses;
 			$row[] = $tambah;

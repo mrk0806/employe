@@ -10,7 +10,7 @@ class Akses_model extends CI_Model
   protected $pk3 = 'kode_menu'; // key 3
   protected $pk4 = 'level'; // key 4
   protected $columns = ['kode_menu, level_user, akses, add, edit, delete, id']; //nama field
-  protected $columns_join = ['akses.kode_menu,level, level_user, akses, add, edit, delete, id']; //nama field
+  protected $columns_join = ['akses.kode_menu, nama_menu, url, aktif,level, level_user, akses, add, edit, delete, id']; //nama field
 
 
   public function save($data)

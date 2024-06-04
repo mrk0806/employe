@@ -26,7 +26,7 @@
 
       <form action="login/auth" method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="NIK" name="nik">
+          <input type="text" class="form-control" placeholder="NIK" name="nik" value="<?= $nik; ?>">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -45,7 +45,7 @@
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="remember">
+              <input type="checkbox" id="remember" name="remember" <?= $remember; ?>>
               <label for="remember">
                 Remember Me
               </label>
@@ -59,16 +59,6 @@
         </div>
       </form>
 
-      <!-- <div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a> -->
-      <!-- </div> -->
-      <!-- /.social-auth-links -->
 
       <p class="mb-1">
         <a href="forgot-password.html">I forgot my password</a>
@@ -91,22 +81,21 @@
 
 <!-- script tambahan -->
 <script>
-                var showPassword = false;
-                function togglePassword() {
-                  var passwordInput = document.querySelector('[name="password"]');
-                  showPassword = !showPassword;
-                  
-                  if (showPassword) {
-                    passwordInput.type = 'text';
-                    document.getElementById('togglePasswordIcon').className = 'fas fa-lock-open';
-                  } else {
-                    passwordInput.type = 'password';
-                    document.getElementById('togglePasswordIcon').className = 'fas fa-lock';
-                  }
-                }
-              </script>
+  var showPassword = false;
+  function togglePassword() {
+    var passwordInput = document.querySelector('[name="password"]');
+    showPassword = !showPassword;
+    
+    if (showPassword) {
+      passwordInput.type = 'text';
+      document.getElementById('togglePasswordIcon').className = 'fas fa-lock-open';
+    } else {
+      passwordInput.type = 'password';
+      document.getElementById('togglePasswordIcon').className = 'fas fa-lock';
+    }
+  }
+</script>
 
-<!-- Menggunakan AJAX untuk mengirim data formulir ke login/auth -->
 <script>
 $(document).ready(function(){
     $('form').submit(function(e){
@@ -114,7 +103,8 @@ $(document).ready(function(){
         
         var nikValue = $('[name="nik"]').val();
         var passwordValue = $('[name="password"]').val();
-        
+        var formData = $(this).serializeArray();
+       
         if(nikValue.trim() === '' || passwordValue.trim() === '') {
             alert('NIK dan Password harus diisi');
         } else {
@@ -122,7 +112,7 @@ $(document).ready(function(){
                 type: 'POST',
                 url: 'login/auth',
                 dataType:'json',
-                data: $(this).serialize(),
+                data: formData,
                 success: function(response){
                     if(response.success) {
                         alert(response.message);
