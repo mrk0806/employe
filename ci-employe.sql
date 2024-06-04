@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : Mysql Laragon
+ Source Server         : Mysql Local
  Source Server Type    : MySQL
  Source Server Version : 80030 (8.0.30)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 28/05/2024 12:43:38
+ Date: 05/06/2024 00:12:59
 */
 
 SET NAMES utf8mb4;
@@ -25,12 +25,12 @@ CREATE TABLE `akses`  (
   `kode_menu` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `level_user` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `akses` enum('0','1') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `tambah` enum('0','1') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `add` enum('0','1') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `edit` enum('0','1') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `hapus` enum('0','1') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `delete` enum('0','1') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `id` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of akses
@@ -42,6 +42,10 @@ INSERT INTO `akses` VALUES ('mn002-s002', 'admin', '1', '1', '1', '1', 4);
 INSERT INTO `akses` VALUES ('mn003', 'admin', '1', '0', '0', '0', 5);
 INSERT INTO `akses` VALUES ('mn003-s001', 'admin', '1', '1', '1', '1', 6);
 INSERT INTO `akses` VALUES ('mn001', 'karyawan', '1', '0', '0', '0', 7);
+INSERT INTO `akses` VALUES ('mn004', 'admin', '1', '', '', '', 8);
+INSERT INTO `akses` VALUES ('mn004', 'karyawan', '1', '', '', '', 9);
+INSERT INTO `akses` VALUES ('mn004-s001', 'admin', '1', '1', '1', '1', 10);
+INSERT INTO `akses` VALUES ('mn004-s001', 'karyawan', '1', '1', '1', '1', 11);
 
 -- ----------------------------
 -- Table structure for data_karyawan
@@ -59,8 +63,8 @@ CREATE TABLE `data_karyawan`  (
 -- ----------------------------
 -- Records of data_karyawan
 -- ----------------------------
-INSERT INTO `data_karyawan` VALUES ('123456', 'Mohamad reza kurniawan', '1993-06-08', '2020-10-10', NULL, 'it');
-INSERT INTO `data_karyawan` VALUES ('123', 'Zidane', '1992-06-08', '2020-10-10', NULL, 'hrd');
+INSERT INTO `data_karyawan` VALUES ('123456', 'Mohamad reza kurniawan', '2024-05-30', '2024-05-30', '2024-05-30', 'it');
+INSERT INTO `data_karyawan` VALUES ('123', 'Jamet', '2024-05-30', '2024-05-30', '0000-00-00', 'hrd');
 
 -- ----------------------------
 -- Table structure for logs
@@ -74,35 +78,57 @@ CREATE TABLE `logs`  (
   `nik` int NOT NULL,
   `log_time` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of logs
 -- ----------------------------
-INSERT INTO `logs` VALUES (1, 'http://localhost:8080/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"test\",\"nama_menu\":\"etst\",\"url\":\"test\",\"icon\":\"etset\",\"level\":\"sub_menu\",\"main_menu\":\"test\",\"no_urut\":\"67\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 08:29:17\"}', 0, '2024-05-28 08:29:17');
-INSERT INTO `logs` VALUES (2, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"nama\",\"url\":\"class\\/method\",\"icon\":\"icon\",\"level\":\"main_menu\",\"main_menu\":\"main menu\",\"no_urut\":\"7\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 08:40:38\"}', 123456, '2024-05-28 08:40:38');
-INSERT INTO `logs` VALUES (3, 'http://localhost:8080/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"a\",\"nama_menu\":\"a\",\"url\":\"a\",\"icon\":\"a\",\"level\":\"sub_menu\",\"main_menu\":\"a\",\"no_urut\":\"12\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 09:04:49\"}', 123456, '2024-05-28 09:04:49');
-INSERT INTO `logs` VALUES (4, 'http://localhost:8080/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"1\",\"nama_menu\":\"1\",\"url\":\"1\",\"icon\":\"1\",\"level\":\"sub_menu\",\"main_menu\":\"1\",\"no_urut\":\"111\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 09:06:58\"}', 123456, '2024-05-28 09:06:58');
-INSERT INTO `logs` VALUES (5, 'http://localhost:8080/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"2\",\"nama_menu\":\"3\",\"url\":\"56\",\"icon\":\"4\",\"level\":\"main_menu\",\"main_menu\":\"6\",\"no_urut\":\"77\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 09:09:10\"}', 123456, '2024-05-28 09:09:10');
-INSERT INTO `logs` VALUES (6, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"3\",\"url\":\"56\",\"icon\":\"4\",\"level\":\"main_menu\",\"main_menu\":\"6\",\"no_urut\":\"77\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 09:09:22\"}', 123456, '2024-05-28 09:09:22');
-INSERT INTO `logs` VALUES (7, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"test\",\"url\":\"56\",\"icon\":\"4\",\"level\":\"main_menu\",\"main_menu\":\"6\",\"no_urut\":\"77\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 09:09:41\"}', 123456, '2024-05-28 09:09:41');
-INSERT INTO `logs` VALUES (8, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"Konfigurasi\",\"url\":\"konfigurasi\",\"icon\":\"fa-edit\",\"level\":\"main_menu\",\"main_menu\":\"\",\"no_urut\":\"2\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 09:17:44\"}', 123456, '2024-05-28 09:17:44');
-INSERT INTO `logs` VALUES (9, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"Konfigurasi\",\"url\":\"konfigurasi\",\"icon\":\"fa-edit\",\"level\":\"main_menu\",\"main_menu\":\"\",\"no_urut\":\"2\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 09:18:27\"}', 123456, '2024-05-28 09:18:27');
-INSERT INTO `logs` VALUES (10, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"Konfigurasi\",\"url\":\"konfigurasi\",\"icon\":\"fa-edit\",\"level\":\"main_menu\",\"main_menu\":\"\",\"no_urut\":\"2\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 09:18:31\"}', 123456, '2024-05-28 09:18:31');
-INSERT INTO `logs` VALUES (11, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"Konfigurasi edit\",\"url\":\"konfigurasi\",\"icon\":\"fa-edit edit\",\"level\":\"main_menu\",\"main_menu\":\"edit\",\"no_urut\":\"27\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 09:24:08\"}', 123456, '2024-05-28 09:24:08');
-INSERT INTO `logs` VALUES (12, 'http://localhost:8080/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"1\",\"nama_menu\":\"fg\",\"url\":\"fg\",\"icon\":\"fg\",\"level\":\"sub_menu\",\"main_menu\":\"fg\",\"no_urut\":\"fg\",\"aktif\":\"0\",\"tanggal\":\"2024-05-28 09:25:13\"}', 123456, '2024-05-28 09:25:13');
-INSERT INTO `logs` VALUES (13, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"Konfigurasi edit\",\"url\":\"konfigurasi\",\"icon\":\"fa-edit edit\",\"level\":\"main_menu\",\"main_menu\":\"edit\",\"no_urut\":\"1\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 09:58:22\"}', 123456, '2024-05-28 09:58:22');
-INSERT INTO `logs` VALUES (14, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"Konfigurasi edit\",\"url\":\"konfigurasi\",\"icon\":\"fa-edit edit\",\"level\":\"main_menu\",\"main_menu\":\"edit\",\"no_urut\":\"1\",\"aktif\":\"0\",\"tanggal\":\"2024-05-28 09:59:10\"}', 123456, '2024-05-28 09:59:10');
-INSERT INTO `logs` VALUES (15, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"a\",\"url\":\"a\",\"icon\":\"a\",\"level\":\"sub_menu\",\"main_menu\":\"a\",\"no_urut\":\"12\",\"aktif\":\"0\",\"tanggal\":\"2024-05-28 09:59:17\"}', 123456, '2024-05-28 09:59:17');
-INSERT INTO `logs` VALUES (16, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"etst\",\"url\":\"test\",\"icon\":\"etset\",\"level\":\"sub_menu\",\"main_menu\":\"test\",\"no_urut\":\"67\",\"aktif\":\"0\",\"tanggal\":\"2024-05-28 09:59:22\"}', 123456, '2024-05-28 09:59:22');
-INSERT INTO `logs` VALUES (17, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"Data Karyawan\",\"url\":\"master_data\\/data_karyawan\",\"icon\":\"fa-circle\",\"level\":\"sub_menu\",\"main_menu\":\"mn003\",\"no_urut\":\"6\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 10:00:20\"}', 123456, '2024-05-28 10:00:20');
-INSERT INTO `logs` VALUES (18, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"Menu Sistem\",\"url\":\"konfigurasi\\/menu_sistem\",\"icon\":\"fa-circle\",\"level\":\"sub_menu\",\"main_menu\":\"mn002\",\"no_urut\":\"4\",\"aktif\":\"0\",\"tanggal\":\"2024-05-28 10:00:34\"}', 123456, '2024-05-28 10:00:34');
-INSERT INTO `logs` VALUES (19, 'http://localhost:8080/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"1\",\"nama_menu\":\"1\",\"url\":\"1\",\"icon\":\"1\",\"level\":\"main_menu\",\"main_menu\":\"1\",\"no_urut\":\"1\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 10:20:09\"}', 123456, '2024-05-28 10:20:09');
-INSERT INTO `logs` VALUES (20, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"clock\",\"url\":\"1\",\"icon\":\"1\",\"level\":\"main_menu\",\"main_menu\":\"1\",\"no_urut\":\"1\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 10:20:29\"}', 123456, '2024-05-28 10:20:29');
-INSERT INTO `logs` VALUES (21, 'http://localhost:8080/employe/menu_sistem/delete', 'DELETE', '{\"kode_menu\":\"1\",\"nama_menu\":\"clock\",\"url\":\"1\",\"icon\":\"1\",\"level\":\"main_menu\",\"main_menu\":\"1\",\"aktif\":\"1\",\"no_urut\":\"1\",\"tanggal\":\"2024-05-28 10:20:29\",\"user\":\"0\"}', 123456, '2024-05-28 10:20:38');
-INSERT INTO `logs` VALUES (22, 'http://localhost:8080/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"1\",\"nama_menu\":\"1\",\"url\":\"1\",\"icon\":\"1\",\"level\":\"sub_menu\",\"main_menu\":\"1\",\"no_urut\":\"1\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 10:33:48\"}', 123456, '2024-05-28 10:33:48');
-INSERT INTO `logs` VALUES (23, 'http://localhost:8080/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"2\",\"url\":\"1\",\"icon\":\"1\",\"level\":\"sub_menu\",\"main_menu\":\"1\",\"no_urut\":\"1\",\"aktif\":\"1\",\"tanggal\":\"2024-05-28 10:33:53\"}', 123456, '2024-05-28 10:33:53');
-INSERT INTO `logs` VALUES (24, 'http://localhost:8080/employe/menu_sistem/delete', 'DELETE', '{\"kode_menu\":\"1\",\"nama_menu\":\"2\",\"url\":\"1\",\"icon\":\"1\",\"level\":\"sub_menu\",\"main_menu\":\"1\",\"aktif\":\"1\",\"no_urut\":\"1\",\"tanggal\":\"2024-05-28 10:33:53\",\"user\":\"0\"}', 123456, '2024-05-28 10:33:57');
+INSERT INTO `logs` VALUES (1, 'http://localhost/employe/akses/updateAkses', 'UPDATE', '{\"akses\":\"0\"}', 123456, '2024-05-28 23:33:36');
+INSERT INTO `logs` VALUES (2, 'http://localhost/employe/akses/updateAkses', 'UPDATE', '{\"akses\":\"1\"}', 123456, '2024-05-28 23:33:44');
+INSERT INTO `logs` VALUES (3, 'http://localhost/employe/akses/updateAkses', 'UPDATE', '{\"akses\":\"0\",\"id\":\"7\"}', 123456, '2024-05-28 23:35:19');
+INSERT INTO `logs` VALUES (4, 'http://localhost/employe/akses/updateAkses', 'UPDATE', '{\"akses\":\"1\",\"id\":\"7\"}', 123456, '2024-05-28 23:35:48');
+INSERT INTO `logs` VALUES (5, 'http://localhost/employe/akses/updateAkses', 'UPDATE', '{\"edit\":\"0\",\"id\":\"6\"}', 123456, '2024-05-28 23:37:46');
+INSERT INTO `logs` VALUES (6, 'http://localhost/employe/akses/updateAkses', 'UPDATE', '{\"edit\":\"1\",\"id\":\"6\"}', 123456, '2024-05-28 23:37:53');
+INSERT INTO `logs` VALUES (7, 'http://localhost/employe/akses/updateAkses', 'UPDATE', '{\"akses\":\"0\",\"id\":\"7\"}', 123456, '2024-05-28 23:38:01');
+INSERT INTO `logs` VALUES (8, 'http://localhost/employe/akses/updateAkses', 'UPDATE', '{\"akses\":\"1\",\"id\":\"7\"}', 123456, '2024-05-28 23:38:02');
+INSERT INTO `logs` VALUES (9, 'http://192.168.1.13/employe/data_karyawan/update', 'UPDATE', '{\"nama_lengkap\":\"Zidane\",\"tgl_lahir\":\"1992-06-08\",\"tgl_masuk\":\"2020-10-10\",\"tgl_keluar\":\"2024-05-22\",\"divisi\":\"finance\"}', 123456, '2024-05-28 23:45:23');
+INSERT INTO `logs` VALUES (10, 'http://192.168.1.13/employe/akses/updateAkses', 'UPDATE', '{\"akses\":\"0\",\"id\":\"7\"}', 123456, '2024-05-28 23:46:38');
+INSERT INTO `logs` VALUES (11, 'http://192.168.1.13/employe/akses/updateAkses', 'UPDATE', '{\"akses\":\"1\",\"id\":\"7\"}', 123456, '2024-05-28 23:46:39');
+INSERT INTO `logs` VALUES (12, 'http://192.168.1.13/employe/akses/updateAkses', 'UPDATE', '{\"tambah\":\"0\",\"id\":\"6\"}', 123456, '2024-05-28 23:47:02');
+INSERT INTO `logs` VALUES (13, 'http://192.168.1.13/employe/akses/updateAkses', 'UPDATE', '{\"tambah\":\"1\",\"id\":\"6\"}', 123456, '2024-05-28 23:47:03');
+INSERT INTO `logs` VALUES (14, 'http://192.168.1.13/employe/data_karyawan/update', 'UPDATE', '{\"nama_lengkap\":\"Mohamad reza kurniawan\",\"tgl_lahir\":\"1993-06-08\",\"tgl_masuk\":\"2022-10-10\",\"tgl_keluar\":\"\",\"divisi\":\"it\"}', 123456, '2024-05-28 23:49:20');
+INSERT INTO `logs` VALUES (15, 'http://localhost/employe/akses/updateAkses', 'UPDATE', '{\"edit\":\"0\",\"id\":\"4\"}', 123456, '2024-05-29 00:37:57');
+INSERT INTO `logs` VALUES (16, 'http://localhost/employe/data_karyawan/update', 'UPDATE', '{\"nama_lengkap\":\"Zidane\",\"tgl_lahir\":\"1992-06-08\",\"tgl_masuk\":\"2020-10-10\",\"tgl_keluar\":\"2024-05-22\",\"divisi\":\"finance\"}', 123456, '2024-05-29 00:38:12');
+INSERT INTO `logs` VALUES (17, 'http://localhost/employe/data_karyawan/update', 'UPDATE', '{\"nama_lengkap\":\"Mohamad reza kurniawan\",\"tgl_lahir\":\"1993-06-08\",\"tgl_masuk\":\"2022-10-10\",\"tgl_keluar\":\"\",\"divisi\":\"it\"}', 123456, '2024-05-29 00:39:30');
+INSERT INTO `logs` VALUES (18, 'http://localhost/employe/menu_sistem/delete', 'DELETE', '{\"kode_menu\":\"mn001\",\"nama_menu\":\"Dashboard\",\"url\":\"dashboard\\/\",\"icon\":\"\",\"level\":\"main_menu\",\"main_menu\":null,\"aktif\":\"1\",\"no_urut\":\"1\",\"tanggal\":\"2024-05-25 13:36:03\",\"user\":\"Reza\"}', 123456, '2024-05-29 01:00:58');
+INSERT INTO `logs` VALUES (19, 'http://localhost/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"mn001\",\"nama_menu\":\"Dashboard\",\"url\":\"dashboard\\/\",\"icon\":\"\",\"level\":\"main_menu\",\"main_menu\":\"\",\"no_urut\":\"1\",\"aktif\":\"1\",\"tanggal\":\"2024-05-29 01:01:51\"}', 123456, '2024-05-29 01:01:51');
+INSERT INTO `logs` VALUES (20, 'http://localhost/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"1\",\"nama_menu\":\"1\",\"url\":\"1\",\"icon\":\"1\",\"level\":\"main_menu\",\"main_menu\":\"1\",\"no_urut\":\"1\",\"aktif\":\"1\",\"tanggal\":\"2024-05-29 01:02:31\"}', 123456, '2024-05-29 01:02:31');
+INSERT INTO `logs` VALUES (21, 'http://localhost/employe/menu_sistem/delete', 'DELETE', '{\"kode_menu\":\"1\",\"nama_menu\":\"1\",\"url\":\"1\",\"icon\":\"1\",\"level\":\"main_menu\",\"main_menu\":\"1\",\"aktif\":\"1\",\"no_urut\":\"1\",\"tanggal\":\"2024-05-29 01:02:31\",\"user\":\"\"}', 123456, '2024-05-29 01:02:42');
+INSERT INTO `logs` VALUES (22, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"edit\":\"0\",\"id\":\"6\"}', 123456, '2024-05-30 04:22:36');
+INSERT INTO `logs` VALUES (23, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"edit\":\"0\",\"id\":\"3\"}', 123456, '2024-05-30 04:22:48');
+INSERT INTO `logs` VALUES (24, 'http://localhost/employe/data_karyawan/delete', 'DELETE', '{\"nik\":\"123456\",\"nama_lengkap\":\"Mohamad reza kurniawan\",\"tgl_lahir\":\"1993-06-08\",\"tgl_masuk\":\"2022-10-10\",\"tgl_keluar\":\"0000-00-00\",\"divisi\":\"it\"}', 123456, '2024-05-30 04:23:00');
+INSERT INTO `logs` VALUES (25, 'http://localhost/employe/data_karyawan/add', 'ADD', '{\"nik\":\"123456\",\"nama_lengkap\":\"Mohamad reza kurniawan\",\"tgl_lahir\":\"2024-05-30\",\"tgl_masuk\":\"2024-05-30\",\"tgl_keluar\":\"2024-05-30\",\"divisi\":\"it\"}', 123456, '2024-05-30 04:23:36');
+INSERT INTO `logs` VALUES (26, 'http://localhost/employe/data_karyawan/delete', 'DELETE', '{\"nik\":\"123\",\"nama_lengkap\":\"Zidane\",\"tgl_lahir\":\"1992-06-08\",\"tgl_masuk\":\"2020-10-10\",\"tgl_keluar\":\"2024-05-22\",\"divisi\":\"finance\"}', 123456, '2024-05-30 04:25:01');
+INSERT INTO `logs` VALUES (27, 'http://localhost/employe/data_karyawan/add', 'ADD', '{\"nik\":\"123\",\"nama_lengkap\":\"Tetot\",\"tgl_lahir\":\"2024-05-30\",\"tgl_masuk\":\"2024-05-30\",\"tgl_keluar\":\"\",\"divisi\":\"hrd\"}', 123456, '2024-05-30 04:25:36');
+INSERT INTO `logs` VALUES (28, 'http://localhost/employe/data_karyawan/add', 'ADD', '{\"nik\":\"1234\",\"nama_lengkap\":\"test\",\"tgl_lahir\":\"2024-06-04\",\"tgl_masuk\":\"2024-06-04\",\"tgl_keluar\":\"\",\"divisi\":\"it\"}', 123456, '2024-06-04 22:41:40');
+INSERT INTO `logs` VALUES (29, 'http://localhost/employe/data_karyawan/delete', 'DELETE', '{\"nik\":\"1234\",\"nama_lengkap\":\"test\",\"tgl_lahir\":\"2024-06-04\",\"tgl_masuk\":\"2024-06-04\",\"tgl_keluar\":\"0000-00-00\",\"divisi\":\"it\"}', 123456, '2024-06-04 22:43:27');
+INSERT INTO `logs` VALUES (30, 'http://localhost/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"mn004\",\"nama_menu\":\"test\",\"url\":\"test\",\"icon\":\"test\",\"level\":\"main_menu\",\"main_menu\":\"\",\"no_urut\":\"8\",\"aktif\":\"1\",\"tanggal\":\"2024-06-04 22:52:24\",\"user\":\"123456\"}', 123456, '2024-06-04 22:52:24');
+INSERT INTO `logs` VALUES (31, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"akses\":\"1\",\"id\":\"9\"}', 123456, '2024-06-04 23:51:37');
+INSERT INTO `logs` VALUES (32, 'http://localhost/employe/menu_sistem/add', 'ADD', '{\"kode_menu\":\"mn004-s001\",\"nama_menu\":\"Tester\",\"url\":\"konfigurasi\\/akses\",\"icon\":\"\",\"level\":\"sub_menu\",\"main_menu\":\"mn004\",\"no_urut\":\"7\",\"aktif\":\"1\",\"tanggal\":\"2024-06-04 23:53:45\",\"user\":\"123456\"}', 123456, '2024-06-04 23:53:45');
+INSERT INTO `logs` VALUES (33, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"akses\":\"1\",\"id\":\"11\"}', 123456, '2024-06-04 23:53:58');
+INSERT INTO `logs` VALUES (34, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"add\":\"1\",\"id\":\"11\"}', 123456, '2024-06-04 23:54:00');
+INSERT INTO `logs` VALUES (35, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"edit\":\"1\",\"id\":\"11\"}', 123456, '2024-06-04 23:54:01');
+INSERT INTO `logs` VALUES (36, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"delete\":\"1\",\"id\":\"11\"}', 123456, '2024-06-04 23:54:02');
+INSERT INTO `logs` VALUES (37, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"edit\":\"1\",\"id\":\"6\"}', 123, '2024-06-04 23:54:31');
+INSERT INTO `logs` VALUES (38, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"edit\":\"0\",\"id\":\"6\"}', 123, '2024-06-04 23:54:33');
+INSERT INTO `logs` VALUES (39, 'http://localhost/employe/menu_sistem/update', 'UPDATE', '{\"nama_menu\":\"Tester\",\"url\":\"master_data\\/data_karyawan\",\"icon\":\"\",\"level\":\"sub_menu\",\"main_menu\":\"mn004\",\"no_urut\":\"7\",\"aktif\":\"1\",\"tanggal\":\"2024-06-04 23:59:27\"}', 123456, '2024-06-04 23:59:27');
+INSERT INTO `logs` VALUES (40, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"akses\":\"1\",\"id\":\"8\"}', 123456, '2024-06-05 00:10:30');
+INSERT INTO `logs` VALUES (41, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"akses\":\"1\",\"id\":\"10\"}', 123456, '2024-06-05 00:10:31');
+INSERT INTO `logs` VALUES (42, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"add\":\"1\",\"id\":\"10\"}', 123456, '2024-06-05 00:10:33');
+INSERT INTO `logs` VALUES (43, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"edit\":\"1\",\"id\":\"10\"}', 123456, '2024-06-05 00:10:34');
+INSERT INTO `logs` VALUES (44, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"delete\":\"1\",\"id\":\"10\"}', 123456, '2024-06-05 00:10:36');
+INSERT INTO `logs` VALUES (45, 'http://localhost/employe/akses/edit', 'UPDATE', '{\"edit\":\"1\",\"id\":\"6\"}', 123456, '2024-06-05 00:11:10');
+INSERT INTO `logs` VALUES (46, 'http://localhost/employe/data_karyawan/update', 'UPDATE', '{\"nama_lengkap\":\"Jamet\",\"tgl_lahir\":\"2024-05-30\",\"tgl_masuk\":\"2024-05-30\",\"tgl_keluar\":\"\",\"divisi\":\"hrd\"}', 123456, '2024-06-05 00:11:30');
 
 -- ----------------------------
 -- Table structure for menu
@@ -117,19 +143,21 @@ CREATE TABLE `menu`  (
   `main_menu` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `aktif` enum('0','1') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `no_urut` int NOT NULL,
-  `tanggal` datetime NOT NULL,
-  `user` int NOT NULL
+  `tanggal` datetime NULL DEFAULT NULL,
+  `user` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES ('mn002', 'Konfigurasi', 'konfigurasi', 'fa-edit', 'main_menu', NULL, '1', 2, '2024-05-25 08:18:27', 123456);
-INSERT INTO `menu` VALUES ('mn002-s001', 'Akses', 'konfigurasi/akses', 'fa-circle', 'sub_menu', 'mn002', '1', 3, '2024-05-25 08:19:53', 123456);
-INSERT INTO `menu` VALUES ('mn002-s002', 'Menu Sistem', 'konfigurasi/menu_sistem', 'fa-circle', 'sub_menu', 'mn002', '1', 4, '2024-05-28 10:00:34', 123456);
-INSERT INTO `menu` VALUES ('mn003', 'Master Data', 'master_data', 'fa-database', 'main_menu', NULL, '1', 5, '2024-05-25 08:22:03', 123456);
-INSERT INTO `menu` VALUES ('mn003-s001', 'Data Karyawan', 'master_data/data_karyawan', 'fa-circle', 'sub_menu', 'mn003', '1', 6, '2024-05-28 10:00:20', 123456);
-INSERT INTO `menu` VALUES ('mn001', 'Dashboard', 'dashboard/', 'test', 'main_menu', '', '1', 1, '2024-05-25 13:36:03', 123456);
+INSERT INTO `menu` VALUES ('mn002', 'Konfigurasi', 'konfigurasi', 'fa-edit', 'main_menu', NULL, '1', 2, '2024-05-25 08:18:27', 'Reza');
+INSERT INTO `menu` VALUES ('mn002-s001', 'Akses', 'konfigurasi/akses', 'fa-circle', 'sub_menu', 'mn002', '1', 3, '2024-05-25 08:19:53', 'Reza');
+INSERT INTO `menu` VALUES ('mn002-s002', 'Menu Sistem', 'konfigurasi/menu_sistem', 'fa-circle', 'sub_menu', 'mn002', '1', 4, '2024-05-25 08:20:41', 'Reza');
+INSERT INTO `menu` VALUES ('mn003', 'Master Data', 'master_data', 'fa-database', 'main_menu', NULL, '1', 5, '2024-05-25 08:22:03', 'Reza');
+INSERT INTO `menu` VALUES ('mn003-s001', 'Data Karyawan', 'master_data/data_karyawan', 'fa-circle', 'sub_menu', 'mn003', '1', 6, '2024-05-28 22:30:20', 'Reza');
+INSERT INTO `menu` VALUES ('mn001', 'Dashboard', 'dashboard/', '', 'main_menu', '', '1', 1, '2024-05-29 01:01:51', '');
+INSERT INTO `menu` VALUES ('mn004', 'Stock Opname', 'stock_opname', 'fa-database', 'main_menu', '', '1', 8, '2024-06-04 22:52:24', '123456');
+INSERT INTO `menu` VALUES ('mn004-s001', 'Scan Barang', 'stock_opname/scan', '', 'sub_menu', 'mn004', '1', 7, '2024-06-04 23:59:27', '123456');
 
 -- ----------------------------
 -- Table structure for users
@@ -148,7 +176,7 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('123', '$2y$10$Ms8xJQJ8FO0bpFM/HWAE8evXg.a7.E2DO9N9FB8y1P.fS/cYtBl0m', 'karyawan', 0, '2024-05-25 23:09:52', '0');
-INSERT INTO `users` VALUES ('123456', '$2y$10$Ms8xJQJ8FO0bpFM/HWAE8evXg.a7.E2DO9N9FB8y1P.fS/cYtBl0m', 'admin', 0, '2024-05-28 07:34:08', '0');
+INSERT INTO `users` VALUES ('123', '$2y$10$Ms8xJQJ8FO0bpFM/HWAE8evXg.a7.E2DO9N9FB8y1P.fS/cYtBl0m', 'karyawan', 0, '2024-06-05 00:11:40', '0');
+INSERT INTO `users` VALUES ('123456', '$2y$10$Ms8xJQJ8FO0bpFM/HWAE8evXg.a7.E2DO9N9FB8y1P.fS/cYtBl0m', 'admin', 0, '2024-06-05 00:10:13', '0');
 
 SET FOREIGN_KEY_CHECKS = 1;
