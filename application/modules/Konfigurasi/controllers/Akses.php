@@ -8,6 +8,7 @@ class Akses extends CI_Controller
 		parent::__construct();
 		$this->load->model('Akses_model', 'get_model');
 		cek_aktif_login();
+		cek_akses_user();
 	}
 
 	public function index()

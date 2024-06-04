@@ -10,6 +10,7 @@ class Data_karyawan extends CI_Controller
 		parent::__construct();
 		$this->load->model('Data_karyawan_model', 'get_model');
 		cek_aktif_login();
+		cek_akses_user();
 	}
 
 	public function index()

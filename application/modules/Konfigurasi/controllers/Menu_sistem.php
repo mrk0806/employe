@@ -10,6 +10,7 @@ class Menu_sistem extends CI_Controller
 		$this->load->model('menu_model', 'get_model');
 		$this->load->model('akses_model');
 		cek_aktif_login();
+		cek_akses_user();
 	}
 
 	public function index()

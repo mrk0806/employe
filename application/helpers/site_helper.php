@@ -125,7 +125,7 @@ function main_menu()
     $main_menu = $ci->db->select('m.*, a.akses, a.add, a.edit, a.delete')
         ->from('menu m')
         ->join('akses a', 'a.kode_menu = m.kode_menu', 'left')
-        ->where(['a.level_user' => $ci->session->userdata('user_logged')['level_user'], 'm.aktif' => '1', 'm.level' => 'main_menu', 'm.nama_menu !=' => 'dashboard'])
+        ->where(['a.level_user' => $ci->session->userdata('user_logged')['level_user'], 'm.aktif' => '1','a.akses' =>'1', 'm.level' => 'main_menu', 'm.nama_menu !=' => 'dashboard'])
         ->order_by('m.no_urut', 'ASC')
         ->get()->result_array();
     return $main_menu;
@@ -137,7 +137,7 @@ function sub_menu()
     $sub_menu = $ci->db->select('m.*, a.akses, a.add, a.edit, a.delete')
         ->from('menu m')
         ->join('akses a', 'a.kode_menu = m.kode_menu', 'left')
-        ->where(['a.level_user' => $ci->session->userdata('user_logged')['level_user'], 'm.aktif' => '1', 'm.level' => 'sub_menu'])
+        ->where(['a.level_user' => $ci->session->userdata('user_logged')['level_user'], 'm.aktif' => '1','a.akses' =>'1', 'm.level' => 'sub_menu'])
         ->order_by('m.no_urut', 'ASC')
         ->get()->result_array();
     return $sub_menu;
