@@ -96,35 +96,18 @@ class Akses extends CI_Controller
 
 	public function edit()
 	{
-		$cek_akses = cek_akses_menu(__FUNCTION__);
-		if ($cek_akses) {
-			
-			$kolom = $this->input->post('inisial');
-			$value = $this->input->post('status');
-			
-			$data = array(
-				$kolom => $value
-			);
-			
-
-			$update = $this->get_model->update(array('id' => $this->input->post('id')), $data);
-			$data['id'] = $this->input->post('id');
-			// Adding to log
-			$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
-			$log_type = "UPDATE";
-			$log_data = json_encode($data);
-
-			log_helper($log_url, $log_type, $log_data);
-			// End log
-
-			if ($update) {
-				echo json_encode(array("status" => TRUE, "message" => "Data successfully updated"));
-			} else {
-				echo json_encode(array("status" => FALSE, "message" => "Failed to update data"));
-			}
-		} else {
+		if (!cek_akses_menu(__FUNCTION__)) {
 			echo json_encode(array("status" => FALSE, "message" => "You don't have access"));
+			return;
 		}
+		
+		$data = array($this->input->post('inisial') => $this->input->post('status'));
+		$update = $this->get_model->update(array('id' => $this->input->post('id')), $data);
+		
+		$data['id'] = $this->input->post('id');
+		log_helper(base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method(), "UPDATE", json_encode($data));
+		
+		echo json_encode(array("status" => $update ? TRUE : FALSE, "message" => $update ? "Data berhasil diperbarui" : "Gagal memperbarui data"));
 	}
 
 

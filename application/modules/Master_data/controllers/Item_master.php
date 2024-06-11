@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Data_karyawan extends CI_Controller
+class Item_master extends CI_Controller
 {
 
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Data_karyawan_model', 'get_model');
+		$this->load->model('Item_master_model', 'get_model');
 		cek_aktif_login();
 		cek_akses_user();
 	}
@@ -19,10 +19,10 @@ class Data_karyawan extends CI_Controller
 		$data['sub_menu'] = sub_menu();
 
 		$data['nama_menu'] = 'Master Data';
-		$data['nama_submenu'] = 'Data Karyawan';
+		$data['nama_submenu'] = 'Item Master';
 		$data['data_user'] = get_user_data();
 
-		$this->load->view('data_karyawan_v', $data);
+		$this->load->view('item_master_v', $data);
 	}
 
 	public function get_list()
@@ -36,18 +36,22 @@ class Data_karyawan extends CI_Controller
 			$row = array();
 
 			$row[] = $no;
-			$row[] = $get->nik;
-			$row[] = ucwords(strtolower($get->nama_lengkap));
-			$row[] = $get->tgl_lahir;
-			$row[] = $get->tgl_masuk;
-			$row[] = $get->tgl_keluar;
-			$row[] = strtoupper($get->divisi);
+			$row[] = $get->item_code;
+			$row[] = $get->stock_code;
+			$row[] = ucwords(strtolower($get->description));
+			$row[] = $get->size;
+			$row[] = $get->brand;
+			$row[] = strtoupper($get->group);
+			$row[] = $get->base_unit;
+			$row[] = $get->inventory_onhand;
+			$row[] = $get->retail_price;
+			$row[] = $get->retail_tag;
 			$row[] = '
-					<a class="btn btn-info btn-sm" href="javascript:void(0)" onclick="edit(' . "'" . $get->nik . "'" . ')">
+					<a class="btn btn-info btn-sm" href="javascript:void(0)" onclick="edit(' . "'" . $get->item_code . "'" . ')">
 						<i class="fas fa-pencil-alt"></i>
 						Edit
 					</a>
-					<a class="btn btn-danger btn-sm" href="javascript:void(0)" onclick="hapus(' . "'" . $get->nik . "'" . ')">
+					<a class="btn btn-danger btn-sm" href="javascript:void(0)" onclick="hapus(' . "'" . $get->item_code . "'" . ')">
 						<i class="fas fa-trash-alt"></i>
 						Delete
 					</a>';
@@ -68,21 +72,25 @@ class Data_karyawan extends CI_Controller
 			return;
 		}
 			$this->_validate();
-			$nik = $this->input->post('nik');
+			$item_code = $this->input->post('item_code');
 
 			$fields = array(
-				'nik' => 'nik',
-				'nama' => 'nama_lengkap',
-				'tgl_lhr' => 'tgl_lahir',
-				'tgl_msk' => 'tgl_masuk',
-				'tgl_klr' => 'tgl_keluar',
-				'divisi' => 'divisi',
+				'item_code' => 'item_code',
+				'stock_code' => 'stock_code',
+				'description' => 'description',
+				'size' => 'size',
+				'brand' => 'brand',
+				'group' => 'group',
+				'base_unit' => 'base_unit',
+				'inventory_onhand' => 'inventory_onhand',
+				'retail_price' => 'retail_price',
+				'retail_tag' => 'retail_tag',
 			);
 
-			$cek = $this->get_model->cek_data($nik);
+			$cek = $this->get_model->cek_data($item_code);
 
 			if ($cek) {
-				echo json_encode(array("status" => FALSE, "message" => "$nik already exists"));
+				echo json_encode(array("status" => FALSE, "message" => "$item_code already exists"));
 				return;
 			}
 
@@ -103,6 +111,7 @@ class Data_karyawan extends CI_Controller
 			} else {
 				echo json_encode(array("status" => FALSE, "message" => "Failed to insert data"));
 			}
+	
 	}
 
 	public function update()
@@ -110,16 +119,21 @@ class Data_karyawan extends CI_Controller
 		$this->_validate();
 
 		$fields = array(
-			'nama' => 'nama_lengkap',
-			'tgl_lhr' => 'tgl_lahir',
-			'tgl_msk' => 'tgl_masuk',
-			'tgl_klr' => 'tgl_keluar',
-			'divisi' => 'divisi',
+		
+			'stock_code' => 'stock_code',
+			'description' => 'description',
+			'size' => 'size',
+			'brand' => 'brand',
+			'group' => 'group',
+			'base_unit' => 'base_unit',
+			'inventory_onhand' => 'inventory_onhand',
+			'retail_price' => 'retail_price',
+			'retail_tag' => 'retail_tag',
 		);
 
 		$data = get_post_data($fields);
 
-		$update = $this->get_model->update(array('nik' => $this->input->post('nik')), $data);
+		$update = $this->get_model->update(array('item_code' => $this->input->post('item_code')), $data);
 
 		// Adding to log
 		$log_url = base_url() . $this->router->fetch_class() . "/" . $this->router->fetch_method();
@@ -158,6 +172,7 @@ class Data_karyawan extends CI_Controller
 			} else {
 				echo json_encode(array("status" => FALSE, "message" => "Failed to deleted data"));
 			}
+	
 	}
 
 
@@ -179,11 +194,15 @@ class Data_karyawan extends CI_Controller
 	private function _validate()
 	{
 		$inputs = array(
-			'nik' => 'NIK is required',
-			'nama' => 'Nama is required',
-			'tgl_lhr' => 'Tanggal Lahir is required',
-			'tgl_msk' => 'Tanggal Masuk is required',
-			'divisi' => 'Divisi is required'
+			'item_code' => 'Item Code is required',
+			'stock_code' => 'Stock Code is required',
+			'description' => 'Description Lahir is required',
+			'size' => 'Size Masuk is required',
+			'brand' => 'Brand is required',
+			'group' => 'Group is required',
+			'base_unit' => 'Base_unit Lahir is required',
+			'retail_price' => 'Retail Price Masuk is required',
+			'retail_tag' => 'Retail Tag is required'
 		);
 
 		validate_inputs($inputs);

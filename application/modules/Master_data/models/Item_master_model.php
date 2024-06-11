@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Scan_model extends CI_Model
+class Item_master_model extends CI_Model
 {
   protected $table = 'ms_item'; //nama tabel
   protected $pk = 'item_code'; //primary key

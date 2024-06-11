@@ -140,9 +140,12 @@
   function edit(id) {
     $('#modal-lg').modal('show');
     $('.modal-title').text('Edit <?= $nama_submenu ?>');
+    // $('#tableMenuModal').DataTable().ajax.url(
+    //   "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>edit_akses/" + id
+    // ).load();
     $('#tableMenuModal').DataTable().ajax.url(
       "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>edit_akses/" + id
-    ).load();
+    ).ajax.reload(null, false);
   }
 
 
@@ -194,31 +197,31 @@
           "sClass": "text-center"
         },
         {
-          "level": "level",
+          "Kode Menu": "Kode Menu",
           "sClass": "text-left"
         },
         {
-          "#": "#",
+          "Nama Menu": "Nama Menu",
           "sClass": "text-center"
         },
         {
-          "No": "No",
+          "Level User": "Level User",
           "sClass": "text-center"
         },
         {
-          "Nama": "Nama",
-          "sClass": "text-left"
-        },
-        {
-          "level": "level",
-          "sClass": "text-left"
-        },
-        {
-          "#": "#",
+          "Akses": "Akses",
           "sClass": "text-center"
         },
         {
-          "#": "#",
+          "Tambah": "Tambah",
+          "sClass": "text-center"
+        },
+        {
+          "Edit": "Edit",
+          "sClass": "text-center"
+        },
+        {
+          "Hapus": "Hapus",
           "sClass": "text-center"
         },
         
