@@ -144,7 +144,7 @@
     </div>
     <!-- ./wrapper -->
 
-    <?= $this->load->view('modal_scan'); ?>
+    <?= $this->load->view('modals/modal_scan'); ?>
 
     <!-- jQuery -->
     <script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
@@ -204,7 +204,7 @@ function scan(scan_id) {
 
 
 function proses(id) {
-  alert(id);
+  // alert(id);
   $.ajax({
         url: "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>edit/" +
           id,

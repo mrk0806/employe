@@ -1,5 +1,5 @@
  <!-- /.modal -->
- <div class="modal fade" id="modal-lg">
+ <div class="modal fade" id="modal-add">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -10,12 +10,16 @@
           </div>
           <div class="modal-body">
             <form action="" method="post" id="menuForm">
-
+            <div style="width: 100%; display: none;" id="reader"></div>
               <div class="form-group row mb-3">
                 <label class="col-sm-4 col-form-label">Item Code</label>
                 <div class="col-sm-8">
+                  <div class="input-group">
                   <input type="text" name="item_code" id="item_code" class="form-control" required="required">
+                  <button class="btn btn-outline-secondary" type="button" id="scan_opname"><i
+                      class="fa fa-qrcode"></i></button>
                   <span class="help-block"></span>
+                  </div>
                 </div>
               </div>
 

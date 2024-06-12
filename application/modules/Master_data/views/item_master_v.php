@@ -110,6 +110,7 @@
     <!-- ./wrapper -->
 
     <?= $this->load->view('modal_item_master'); ?>
+    <?= $this->load->view('modals/modal_scan'); ?>
 
     <!-- jQuery -->
     <script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
@@ -128,13 +129,52 @@
     <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="<?= base_url() ?>assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/camera/html5-qrcode.min.js"></script>
     <!-- AdminLTE App -->
     <script src="<?= base_url() ?>assets/dist/js/adminlte.min.js"></script>
     <!-- Page specific script -->
     <script>
+      
     let save_method;
     let save_url;
+    const modal = $('#modal-add'); // Replace with your modal selector
 
+modal.on('hidden.bs.modal', () => {
+  stopScan()
+  
+});
+
+$("#scan_opname").click(function() {
+  
+  $('#reader').show();
+    scan();
+  });
+
+// Fungsi untuk menghentikan pemindaian
+function stopScan() {
+  if (html5QrcodeScanner) {
+    html5QrcodeScanner.clear();
+  }
+  $('#reader').modal('hide');
+}
+
+    var html5QrcodeScanner; // Deklarasikan variabel scanner di luar fungsi untuk bisa diakses dari fungsi lain
+
+function scan(scan_id) {
+  html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", {
+      fps: 10,
+      qrbox: 250
+    });
+
+  function onScanSuccess(decodedText, decodedResult) {
+    html5QrcodeScanner.clear();
+    $('#reader').modal('hide');
+    $('#item_code').val(decodedText);
+  }
+  // Mulai pemindaian
+  html5QrcodeScanner.render(onScanSuccess);
+}
 
     function resetForm() {
       $('#menuForm')[0].reset();
@@ -166,7 +206,7 @@
           let data = result;
           if (result.status) {
             alert(result.message);
-            $('#modal-lg').modal('hide');
+            $('#modal-add').modal('hide');
             reload();
           } else {
             if (result.inputerror) {
@@ -190,7 +230,7 @@
     function add() {
       resetForm();
       save_method = "add";
-      $('#modal-lg').modal('show');
+      $('#modal-add').modal('show');
       $('#item_code').prop('disabled', false);
       $('#btn_save').text('Add');
       $('.modal-title').text('Add <?= $nama_submenu ?>');
@@ -241,7 +281,7 @@
             $('[name="inventory_onhand"]').val(data.inventory_onhand);
             $('[name="retail_price"]').val(data.retail_price);
             $('[name="retail_tag"]').val(data.retail_tag);
-            $('#modal-lg').modal('show');
+            $('#modal-add').modal('show');
             $('#btn_save').text('Edit');
             $('.modal-title').text('Edit <?= $nama_submenu ?>');
           } else {
