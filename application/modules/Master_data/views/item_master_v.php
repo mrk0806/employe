@@ -232,6 +232,7 @@ function scan(scan_id) {
       save_method = "add";
       $('#modal-add').modal('show');
       $('#item_code').prop('disabled', false);
+      $('#scan_opname').attr('disabled', false);
       $('#btn_save').text('Add');
       $('.modal-title').text('Add <?= $nama_submenu ?>');
     }
@@ -271,6 +272,7 @@ function scan(scan_id) {
           if (result.status == 'success') {
             resetForm();
             $('#item_code').prop('disabled', true);
+            $('#scan_opname').attr('disabled', true);
             $('[name="item_code"]').val(data.item_code);
             $('[name="stock_code"]').val(data.stock_code);
             $('[name="description"]').val(data.description);

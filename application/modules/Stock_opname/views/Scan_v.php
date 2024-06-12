@@ -204,7 +204,6 @@ function scan(scan_id) {
 
 
 function proses(id) {
-  // alert(id);
   $.ajax({
         url: "<?php echo base_url() . $this->uri->segment(1, 0) . $this->uri->slash_segment(2, 'both'); ?>edit/" +
           id,
